@@ -4,6 +4,19 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>AgentR · ∞ resumes. One perfect hire.</title>
+<meta name="description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
+<meta name="theme-color" content="#F5F2EC" />
+<link rel="icon" type="image/png" href="agentr-logo.png" />
+<link rel="apple-touch-icon" href="agentr-logo.png" />
+<!-- social cards. og:image must be an absolute URL: update the domain if this
+     moves off GitHub Pages -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="AgentR · ∞ resumes. One perfect hire." />
+<meta property="og:description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
+<meta property="og:image" content="https://vjkrishnadas.github.io/agents-demo-waitlist/agentr-logo.png" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="AgentR · ∞ resumes. One perfect hire." />
+<meta name="twitter:description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
 <script>
 /* must run before the browser decides to restore scroll on reload */
 if('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -28,6 +41,8 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     --card:#FFFEFA;
     --shadow-sm:0 1px 2px rgba(23,20,37,.06),0 6px 18px rgba(23,20,37,.07);
     --shadow-md:0 2px 4px rgba(23,20,37,.06),0 18px 50px rgba(23,20,37,.12);
+    /* the fixed nav's height: the pinned stage stops here instead of sliding under it */
+    --nav:70px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:auto}
@@ -59,10 +74,16 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   }
   nav.scrolled{background:rgba(245,242,236,.88);backdrop-filter:blur(14px);
     box-shadow:0 1px 0 var(--line)}
+  /* over the dark Guard section the paper bar flips to ink (after .scrolled: same
+     specificity, so source order decides the background while both classes are on) */
+  nav.dark{background:rgba(23,15,58,.72);box-shadow:0 1px 0 rgba(255,255,255,.09)}
+  nav.dark .nav-links{color:rgba(255,255,255,.72)}
+  nav.dark .nav-links > a:not(.btn):hover{color:#fff}
+  nav.dark .logo .mark{filter:brightness(0) invert(1)}
   .nav-in{max-width:1120px;margin:0 auto;padding:16px clamp(20px,5vw,44px);
     display:flex;align-items:center;justify-content:space-between;gap:28px}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
-  .logo .mark{height:28px;width:auto;display:block;object-fit:contain}
+  .logo .mark{height:28px;width:auto;display:block;object-fit:contain;transition:filter .35s}
   .logo em{font-style:normal;color:var(--accent)}
   .nav-links{display:flex;gap:26px;align-items:center;font-size:14.5px;font-weight:600;color:var(--muted)}
   .nav-links > a:not(.btn){position:relative;padding:6px 0;transition:color .2s}
@@ -165,7 +186,10 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   /* ---------------- scrollytelling process ---------------- */
   #process{position:relative;height:480vh}
   /* no overflow clip — the resume travels outside the pin during its hero flight */
-  .stage-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center}
+  /* pins where the stage meets the nav, not behind it, so the lock reads as the panel
+     docking against the bar rather than snapping underneath it */
+  .stage-pin{position:sticky;top:var(--nav);height:calc(100vh - var(--nav));
+    display:flex;align-items:center}
   /* the scene: one full-width cinematic stage */
   .scene{position:relative;width:min(1240px,calc(100% - 48px));height:min(660px,80vh);margin:0 auto}
   .scene::before{content:"";position:absolute;inset:-26px -22px;border-radius:30px;
@@ -190,7 +214,10 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .iv-cam .pip img{height:14px;width:auto;display:block}
 
   /* phase copy: big editorial type, left third */
-  .pcopy{position:absolute;left:1.5%;top:52%;transform:translateY(-50%);width:min(320px,27%);opacity:0}
+  /* centred by flex, NOT by translateY(-50%): the scene timeline tweens y on these
+     blocks, and a gsap y overwrite silently throws away any transform centring */
+  .pcopy{position:absolute;left:1.5%;top:0;bottom:0;width:min(320px,27%);opacity:0;
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
   .pcopy .pn{display:inline-block;font-size:22px;color:var(--brass-deep);transform:rotate(-2deg)}
   .pcopy h3{font-size:clamp(28px,3.1vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.04;margin-top:10px}
   .pcopy h3 .serif{color:var(--accent);font-size:1.06em}
@@ -198,7 +225,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   @media(max-width:960px){
     .scene{height:76vh}
-    .pcopy{left:4%;top:0;transform:none;width:86%}
+    .pcopy{left:4%;top:0;bottom:auto;justify-content:flex-start;width:86%}
     .pcopy h3{font-size:24px}
     .pcopy p{font-size:13.5px;margin-top:8px}
     .bigwords span{font-size:100px;top:auto;bottom:2%}
@@ -358,8 +385,9 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   h2 .serif{font-size:1.05em;color:var(--accent)}
   .lead{color:var(--muted);max-width:54ch;margin:16px auto 0;font-size:17px;line-height:1.6}
 
-  /* the system pillars */
-  .sys-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+  /* the four restraints, two by two */
+  .sys-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:54px;
+    max-width:880px;margin-left:auto;margin-right:auto}
   @media(max-width:880px){.sys-grid{grid-template-columns:1fr}}
   .sys{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;
     box-shadow:var(--shadow-sm);transition:transform .3s,box-shadow .3s;text-align:left}
@@ -370,15 +398,167 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .sys p{color:var(--muted);font-size:14px;line-height:1.6;margin-top:8px}
   .sys .tagline{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-deep);margin-top:14px}
 
+  /* ---------------- proctoring: lights down ----------------
+     The one dark section on an ivory page. It is the moment the room goes quiet and
+     something starts watching, so it gets its own ground rather than another card. */
+  #guard{position:relative;color:#fff;overflow:hidden;
+    background:linear-gradient(150deg,#1E1548,#2C1F6E 55%,#1E1548);
+    padding:clamp(72px,9vw,116px) 0}
+  /* violet cast from above + the same dot grid as the hero, dimmed */
+  #guard::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(62% 46% at 50% -4%,rgba(112,83,232,.26),transparent 72%),
+      radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1.4px);
+    background-size:auto,26px 26px}
+  #guard > .wrap{position:relative;z-index:1}
+  #guard h2{color:#fff}
+  #guard h2 .serif{color:#BCACF5}
+  #guard .lead{color:#B6ACD8}
+
+  /* ---- the Guard scene: interview + invisible helper + the catch ----
+     Authored in the CAUGHT state: helper visible, finding shown, room locked. The GSAP
+     loop resets to clean and replays the catch; without JS (or with reduced motion) the
+     resting frame already tells the whole story. */
+  .gm-stage{position:relative;width:min(880px,100%);aspect-ratio:2.15/1;margin:44px auto 0;
+    font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+  @media(max-width:640px){.gm-stage{aspect-ratio:5/6}}
+
+  /* the interview room */
+  .gm-call{position:absolute;left:0;top:0;width:70%;height:100%;
+    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
+    border-radius:16px;overflow:hidden;backdrop-filter:blur(2px)}
+  .gm-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;
+    border-bottom:1px solid rgba(255,255,255,.1)}
+  .gm-bar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18)}
+  .gm-bar span{margin-left:8px;font-family:'DM Mono',monospace;font-size:10px;
+    letter-spacing:.05em;color:rgba(255,255,255,.45)}
+  .gm-rec{margin-left:auto;display:flex;align-items:center;gap:5px;font-style:normal;
+    font-family:'DM Mono',monospace;font-size:9.5px;color:rgba(255,255,255,.5)}
+  .gm-rec b{width:7px;height:7px;border-radius:50%;background:#BCACF5}
+  .gm-body{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;height:calc(100% - 38px)}
+  .gm-tile{position:relative;border-radius:11px;background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.09);padding:12px}
+  .gm-av{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+    background:var(--accent);color:#fff;font-weight:800;font-size:13px}
+  .gm-av2{background:rgba(255,255,255,.14)}
+  .gm-name{position:absolute;left:12px;bottom:10px;font-family:'DM Mono',monospace;
+    font-size:9.5px;color:rgba(255,255,255,.55)}
+  .gm-wave{position:absolute;right:12px;bottom:12px;display:flex;align-items:flex-end;gap:3px;height:16px}
+  .gm-wave i{width:3px;border-radius:2px;background:#BCACF5;animation:gmwv 1s ease-in-out infinite}
+  .gm-wave i:nth-child(2){animation-delay:.15s}.gm-wave i:nth-child(3){animation-delay:.3s}
+  .gm-wave i:nth-child(4){animation-delay:.45s}.gm-wave i:nth-child(5){animation-delay:.6s}
+  @keyframes gmwv{0%,100%{height:22%}50%{height:100%}}
+  .gm-line{position:absolute;left:12px;top:58%;height:7px;width:64%;border-radius:4px;
+    background:rgba(255,255,255,.16)}
+  .gm-short{top:72%;width:42%}
+  /* the room darkening while locked */
+  .gm-dim{position:absolute;inset:0;background:rgba(23,15,58,.66);opacity:1;
+    transition:none;pointer-events:none}
+  .gm-lock{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);
+    text-align:center;border:2px solid var(--brass);border-radius:10px;padding:9px 18px;
+    color:var(--brass);background:rgba(30,21,72,.6)}
+  .gm-lock b{display:block;font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.08em}
+  .gm-lock small{display:block;margin-top:2px;font-family:'Caveat',cursive;font-weight:600;
+    font-size:15px;opacity:.85}
+
+  /* the invisible helper: ghost-dashed, the thing screen shares can't see */
+  .gm-cheat{position:absolute;left:44%;bottom:7%;width:32%;z-index:2;
+    border:1.5px dashed rgba(188,172,245,.65);border-radius:13px;padding:30px 16px 16px;
+    background:rgba(30,21,72,.55);backdrop-filter:blur(3px);
+    box-shadow:0 22px 50px rgba(0,0,0,.45)}
+  .gm-ctag{position:absolute;top:9px;left:16px;font-family:'DM Mono',monospace;
+    font-size:8.5px;letter-spacing:.06em;color:#BCACF5;opacity:.85}
+  .gm-cheat b{display:block;font-size:12.5px;font-weight:800;color:#fff;margin-bottom:9px}
+  /* > only: .gm-target's corner <i>s must not become answer lines */
+  .gm-cheat > i{display:block;height:7px;border-radius:4px;background:rgba(196,181,253,.4);
+    margin-top:6px;transform-origin:left center}
+  .gm-w60{width:60%}
+  /* brass target brackets, resting ON (the caught frame) */
+  .gm-target{position:absolute;inset:-9px;pointer-events:none}
+  .gm-target::before,.gm-target::after{content:""}
+  .gm-target::before,.gm-target::after,.gm-target i{position:absolute;width:15px;height:15px;
+    border:2.5px solid var(--brass)}
+  .gm-target::before{top:0;left:0;border-right:0;border-bottom:0;border-radius:5px 0 0 0}
+  .gm-target::after{bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 5px 0}
+  .gm-target i:first-child{top:0;right:0;border-left:0;border-bottom:0;border-radius:0 5px 0 0}
+  .gm-target i:last-child{bottom:0;left:0;border-right:0;border-top:0;border-radius:0 0 0 5px}
+
+  /* the sweep Guard runs over the machine; driven by the loop, resting off */
+  .gm-scan{position:absolute;left:0;right:0;top:0;height:90px;z-index:4;opacity:0;
+    pointer-events:none;
+    background:linear-gradient(180deg,transparent,rgba(188,172,245,.2) 46%,rgba(188,172,245,.2) 54%,transparent)}
+
+  /* the Guard: the lit instrument */
+  .gm-guard{position:absolute;right:0;top:6%;width:34%;z-index:3;
+    background:linear-gradient(170deg,rgba(112,83,232,.32),rgba(84,56,204,.13));
+    border:1px solid rgba(188,172,245,.4);border-radius:15px;padding:15px 16px;
+    box-shadow:0 26px 60px rgba(58,37,150,.45)}
+  .gm-ghead{display:flex;align-items:center;gap:7px;color:#fff}
+  .gm-ghead svg{color:#BCACF5;flex-shrink:0}
+  .gm-ghead span{font-size:12.5px;font-weight:800}
+  .gm-ghead small{font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,255,255,.45)}
+  .gm-hb{margin-left:auto;font-style:normal;display:flex;position:relative}
+  .gm-hb i{width:7px;height:7px;border-radius:50%;background:#BCACF5;
+    box-shadow:0 0 0 0 rgba(188,172,245,.65);animation:gdbeat 2.4s ease-out infinite}
+  /* the ping the loop fires when the heartbeat notices something */
+  .gm-ping{position:absolute;inset:0;border-radius:50%;border:2px solid #BCACF5;opacity:0;
+    pointer-events:none}
+  @keyframes gdbeat{
+    0%{box-shadow:0 0 0 0 rgba(188,172,245,.6);opacity:1}
+    70%{box-shadow:0 0 0 11px rgba(188,172,245,0);opacity:.85}
+    100%{box-shadow:0 0 0 0 rgba(188,172,245,0);opacity:1}}
+  /* verdict: two pills stacked in one slot, crossfaded by the loop */
+  .gm-vrow{position:relative;margin-top:12px;height:24px}
+  .gm-v{position:absolute;left:0;top:0;font-family:'DM Mono',monospace;font-size:10.5px;
+    letter-spacing:.06em;padding:5px 12px;border-radius:999px}
+  .gm-v-clean{background:rgba(188,172,245,.16);color:#BCACF5;opacity:0}
+  .gm-v-sus{background:var(--brass);color:#170F04}
+  /* one slot, two occupants: the watch list while the room is quiet, the finding when
+     it lands. Fixed height so the floating panel never pops as they swap. */
+  .gm-fslot{position:relative;margin-top:11px;height:82px;
+    border-top:1px solid rgba(255,255,255,.14)}
+  /* the checklist, living inside the scene: what Guard is watching, row by row */
+  .gm-empty{position:absolute;inset:11px 0 0;display:flex;flex-direction:column;gap:6px;
+    opacity:0}
+  .gm-empty span{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;
+    font-size:9.5px;letter-spacing:.04em;color:rgba(255,255,255,.55);white-space:nowrap}
+  .gm-empty i{width:5px;height:5px;border-radius:50%;background:#BCACF5;opacity:.25;
+    flex-shrink:0}
+  .gm-find{position:absolute;inset:11px 0 0;display:flex;gap:9px;align-items:flex-start}
+  .gm-find i{width:8px;height:8px;border-radius:50%;background:var(--brass);
+    flex-shrink:0;margin-top:3px}
+  .gm-find b{display:block;font-size:11.5px;font-weight:800;color:#fff}
+  .gm-find span{display:block;margin-top:2px;font-size:10px;line-height:1.45;
+    color:rgba(255,255,255,.55)}
+
+  /* narrow: room on top, guard below-left, helper below-right */
+  @media(max-width:640px){
+    .gm-call{width:100%;height:52%}
+    .gm-guard{width:56%;top:auto;bottom:2%}
+    .gm-cheat{left:0;bottom:8%;width:40%}
+  }
+
+  .gd-note{margin-top:30px;text-align:center;font-size:23px;color:var(--brass);
+    transform:rotate(-1deg)}
+
+  @media(prefers-reduced-motion:reduce){.gm-hb i,.gm-wave i{animation:none}}
+
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
   .stat-note{margin-top:36px;font-size:22px;color:var(--brass-deep);
     transform:rotate(-1.2deg);text-align:center}
   @media(max-width:820px){.stats-grid{grid-template-columns:1fr 1fr}}
   /* editorial stats: hairline rules, serif numerals */
-  .stat{border-top:2px solid #1A1F1A;padding:22px 8px 0;text-align:left}
+  .stat{border-top:2px solid #1A1F1A;padding:24px 8px 0;text-align:left}
   .stat .num{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;
-    font-size:clamp(46px,5.5vw,66px);letter-spacing:0;color:var(--accent-deep);line-height:1}
-  .stat .lbl{color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.45;font-weight:600}
+    font-size:clamp(52px,6vw,78px);letter-spacing:0;color:var(--accent-deep);line-height:1;
+    display:inline-block}
+  .stat .lbl{color:var(--muted);font-size:13.5px;margin-top:12px;line-height:1.5;font-weight:600}
+  /* the zero gets circled by the brass pen, same ink as the resume's claim circles */
+  .num-wrap{position:relative;display:inline-block}
+  /* sized well past the glyph: hugging it reads as part of the italic zero,
+     not as a pen circling it */
+  .zero-circ{position:absolute;left:-58%;top:-19%;width:216%;height:138%;
+    color:var(--brass);pointer-events:none;transform:rotate(-4deg)}
 
   /* founder note */
   /* the founder note is an actual letter on the desk */
@@ -427,8 +607,8 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     <a class="logo" href="#top" aria-label="AgentR"><img class="mark" src="agentr-logo.png" alt="AgentR" /></a>
     <div class="nav-links">
       <a href="#process">How it works</a>
-      <a href="#system">The system</a>
-      <a href="#stats">Results</a>
+      <a href="#system">What it won't do</a>
+      <a href="#stats">The numbers</a>
       <a href="#waitlist" class="btn">Join waitlist <span class="arr">→</span></a>
     </div>
   </div>
@@ -440,7 +620,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   <div class="strewn" id="strewn"></div>
   <div class="wrap">
     <h1 class="rv"><span class="infu"><svg class="inf" viewBox="0 0 132 80" role="img" aria-label="Infinite"><path class="ip" d="M20 40 C 20 17, 52 17, 66 40 C 80 63, 112 63, 112 40 C 112 17, 80 17, 66 40 C 52 63, 20 63, 20 40"/></svg><span class="infw">resumes.</span></span><br/><span class="infw2">One perfect hire.</span></h1>
-    <p class="sub rv">AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You spend your week on the four that matter.</p>
+    <p class="sub rv">AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You spend your week on the four who matter.</p>
     <form class="waitlist rv" id="form1">
       <input type="email" placeholder="Work email" required aria-label="Work email" />
       <button class="btn" type="submit">Get early access <span class="arr">→</span></button>
@@ -461,30 +641,33 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
         <div class="bigwords" aria-hidden="true">
           <span id="bw1">read.</span>
           <span id="bw2">check.</span>
-          <span id="bw3">listen.</span>
+          <span id="bw3">ask.</span>
           <span id="bw4">decide.</span>
         </div>
 
-        <!-- phase copy, left third, crossfading -->
+        <!-- phase copy, left third, crossfading. Each scene opens on the recruiter's
+             complaint, handwritten, and answers it — the problems used to live in
+             their own section; the demo owns them now. Scene four closes the loop
+             on the hero's promise instead. -->
         <div class="pcopy" id="pc1">
-          <span class="pn hand">step one</span>
+          <span class="pn hand">&ldquo;I can&rsquo;t read two hundred.&rdquo;</span>
           <h3>Read <span class="serif">everything</span></h3>
           <p>Your criteria against every single application. Not keyword bingo. Actual reading, with the evidence kept.</p>
         </div>
         <div class="pcopy" id="pc2">
-          <span class="pn hand">step two</span>
+          <span class="pn hand">&ldquo;I can&rsquo;t tell what&rsquo;s true.&rdquo;</span>
           <h3>Check <span class="serif">the claims</span></h3>
           <p>Every claim is checked against the public record and the candidate's own history. What holds up, what looks overstated, with sources.</p>
         </div>
         <div class="pcopy" id="pc3">
-          <span class="pn hand">step three</span>
-          <h3>Hear <span class="serif">them out</span></h3>
-          <p>A proctored video interview, on their schedule. Camera checks stay advisory. Humans make the calls.</p>
+          <span class="pn hand">&ldquo;They all look the same.&rdquo;</span>
+          <h3>Ask <span class="serif">everyone the same</span></h3>
+          <p>One structured interview: same questions, same bar, on their own schedule. It's what makes thirty strong candidates comparable at all.</p>
         </div>
         <div class="pcopy" id="pc4">
-          <span class="pn hand">step four</span>
+          <span class="pn hand">&hellip;one perfect hire.</span>
           <h3>Meet <span class="serif">four, not 214</span></h3>
-          <p>Top Picks, Contenders, Prospects. Every placement has receipts you can show the hiring manager.</p>
+          <p>Top Picks, Contenders, Prospects. Every name on it has receipts you can show the hiring manager.</p>
         </div>
         <!-- live phase chip -->
         <div class="phase-chip" id="phase">
@@ -584,28 +767,110 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   </div>
 </div>
 
+<!-- ================= PROCTORING / GUARD ================= -->
+<section class="flat" id="guard">
+  <div class="wrap">
+    <div class="center">
+      <h2>Cheating got easier. <span class="serif">So did catching it.</span></h2>
+      <p class="lead">Two layers watch an interview. One sees the room, the other sees the
+        machine. Neither of them decides anything about the person.</p>
+    </div>
+
+    <!-- the whole pitch, acted out: an invisible helper appears over the interview,
+         Guard names it, the room locks until it clears. CSS resting state IS the
+         caught frame, so no-JS and reduced-motion still get the story in one shot. -->
+    <div class="gm-stage" aria-hidden="true">
+
+      <!-- the interview room -->
+      <div class="gm-call">
+        <div class="gm-bar"><i></i><i></i><i></i><span>interview · AgentR</span>
+          <em class="gm-rec"><b></b>rec</em></div>
+        <div class="gm-body">
+          <div class="gm-tile">
+            <span class="gm-av">PN</span>
+            <span class="gm-name">Priya Nair</span>
+            <span class="gm-wave"><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="gm-tile gm-tile2">
+            <span class="gm-av gm-av2">A</span>
+            <span class="gm-name">AgentR</span>
+            <span class="gm-line"></span><span class="gm-line gm-short"></span>
+          </div>
+        </div>
+        <div class="gm-dim"></div>
+        <div class="gm-lock"><b>room locked</b><small>until it clears</small></div>
+      </div>
+
+      <!-- Guard's scan, sweeping the machine when something appears -->
+      <span class="gm-scan"></span>
+
+      <!-- the invisible helper -->
+      <div class="gm-cheat">
+        <span class="gm-ctag">hidden from screen capture</span>
+        <b>Answer helper</b>
+        <i></i><i></i><i class="gm-w60"></i>
+        <!-- the moment it stops being invisible: target brackets snap on -->
+        <span class="gm-target"><i></i><i></i></span>
+      </div>
+
+      <!-- the Guard -->
+      <div class="gm-guard">
+        <div class="gm-ghead">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>AgentR Guard</span><small>macOS</small>
+          <em class="gm-hb"><i></i><b class="gm-ping"></b></em>
+        </div>
+        <div class="gm-vrow">
+          <span class="gm-v gm-v-clean">clean</span>
+          <span class="gm-v gm-v-sus">suspicious</span>
+        </div>
+        <div class="gm-fslot">
+          <div class="gm-empty">
+            <span><i></i>camera &middot; faces, phones, framing</span>
+            <span><i></i>focus &middot; tabs and second displays</span>
+            <span><i></i>machine &middot; capture, screenshots, mic</span>
+            <span><i></i>guard link &middot; signed heartbeat</span>
+          </div>
+          <div class="gm-find">
+            <i></i>
+            <div><b>Hidden overlay</b><span>floating above the interview · "Answer helper"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <p class="gd-note hand">it can close a room. it can never close the door on a candidate.</p>
+  </div>
+</section>
+
 <!-- ================= THE SYSTEM ================= -->
 <section class="flat" id="system">
   <div class="wrap">
     <div class="center">
-      <h2 class="rv">No magic. <span class="serif">Just homework.</span></h2>
-      <p class="lead rv">Three checks stand between the pile and your shortlist.</p>
+      <h2 class="rv">What it <span class="serif">won't</span> do.</h2>
+      <p class="lead rv">The shortlist is a recommendation. Every decision on it stays yours.</p>
     </div>
     <div class="sys-grid">
       <div class="sys rv">
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></div>
+        <h3>It won't reject anyone</h3>
+        <p>Nobody is filtered out on the way to you. The whole pile arrives, ranked, weak end and all. Where to stop reading is your call, not a threshold's.</p>
+      </div>
+      <div class="sys rv">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
-        <h3>Claims get checked</h3>
-        <p>Claims are checked against the public record and the candidate's own application history. What held up, what looks overstated, with sources.</p>
+        <h3>It won't call anyone a liar</h3>
+        <p>Every claim earns one of six verdicts, from supported to mismatch, with the sources beside it. A flag is a question worth asking, not a character judgement.</p>
       </div>
       <div class="sys rv">
         <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
-        <h3>Interviews stay honest</h3>
-        <p>Camera and face checks run quietly through every interview. They flag; they never auto-reject. That call stays yours.</p>
+        <h3>It won't interview everyone</h3>
+        <p>Only candidates above the bar you set are invited automatically. The rest wait for you, so no interview is spent without your say.</p>
       </div>
       <div class="sys rv">
-        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></div>
-        <h3>Rankings show their work</h3>
-        <p>Top Picks, Contenders, Prospects. Click any name and see exactly why it's there: scores, claims, and interview answers.</p>
+        <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>It won't score a suspicion</h3>
+        <p>A camera flag or a locked room never touches a number. It lands as a marker on the recording, for you to watch and weigh yourself.</p>
       </div>
     </div>
   </div>
@@ -614,14 +879,21 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 <!-- ================= STATS ================= -->
 <section class="flat" id="stats">
   <div class="wrap center">
-    <h2 class="rv">Weeks of screening, <span class="serif">gone</span></h2>
+    <h2 class="rv">Four numbers <span class="serif">we'll stand behind.</span></h2>
+    <p class="lead rv">Not benchmarks. Just how the system behaves, every time, for every role.</p>
     <div class="stats-grid">
-      <div class="stat rv"><div class="num" data-to="100" data-suffix="%">0</div><div class="lbl">Of applications read and scored against your criteria</div></div>
-      <div class="stat rv"><div class="num" data-to="0" data-suffix="">0</div><div class="lbl">Auto-rejections. Every decision stays human</div></div>
-      <div class="stat rv"><div class="num" data-to="6" data-suffix="">0</div><div class="lbl">Verdicts a claim can earn, from supported to mismatch</div></div>
-      <div class="stat rv"><div class="num" data-to="24" data-suffix="/7">0</div><div class="lbl">Candidates interview on their own schedule</div></div>
+      <div class="stat rv"><div class="num" data-to="100" data-suffix="%">0</div><div class="lbl">Applications read in full, against your criteria. No skimming, no sampling.</div></div>
+      <div class="stat rv">
+        <span class="num-wrap"><span class="num" data-to="0" data-suffix="">0</span>
+          <!-- the pen circles the number that matters most -->
+          <svg class="zero-circ" viewBox="0 0 120 104" aria-hidden="true"><path d="M16 52 C 12 18, 86 2, 106 32 C 122 60, 86 100, 42 97 C 12 94, 8 74, 16 52" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>
+        </span>
+        <div class="lbl">Auto-rejections. Every no in that pile is one you chose.</div>
+      </div>
+      <div class="stat rv"><div class="num" data-to="6" data-suffix="">0</div><div class="lbl">Verdicts a claim can earn, from supported to mismatch.</div></div>
+      <div class="stat rv"><div class="num" data-to="24" data-suffix="/7">0</div><div class="lbl">Candidates interview when it suits them, not your calendar.</div></div>
     </div>
-    <div class="stat-note hand rv">not benchmarks. just how the system behaves.</div>
+    <div class="stat-note hand rv">the only numbers on this page. on purpose.</div>
   </div>
 </section>
 
@@ -656,7 +928,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 <footer>
   <div class="foot">
     <a class="logo" href="#top" aria-label="AgentR"><img class="mark" src="agentr-logo.png" alt="AgentR" /></a>
-    <div class="foot-links"><a href="#process">How it works</a><a href="#stats">Results</a><a href="#waitlist">Waitlist</a></div>
+    <div class="foot-links"><a href="#process">How it works</a><a href="#stats">The numbers</a><a href="#waitlist">Waitlist</a></div>
     <div>© 2026 AgentR · made by people who read resumes so you don't have to</div>
   </div>
 </footer>
@@ -667,6 +939,10 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 <script>
 gsap.registerPlugin(ScrollTrigger);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* .stage-pin now sticks at --nav, so every trigger that fires "when the stage locks"
+   has to read the same offset — plain 'top top' fires a nav-height too early. */
+const NAV = getComputedStyle(document.documentElement).getPropertyValue('--nav').trim() || '70px';
+const PIN_LOCK = 'top ' + NAV;
 
 /* a refresh always starts the story from the top */
 scrollTo(0,0);
@@ -735,7 +1011,7 @@ if(morphOK){
   }
 
   gsap.timeline({
-    scrollTrigger:{trigger:'#process',start:'top 92%',end:'top top',scrub:.5,invalidateOnRefresh:true}
+    scrollTrigger:{trigger:'#process',start:'top 92%',end:PIN_LOCK,scrub:.5,invalidateOnRefresh:true}
   })
   .fromTo(resumeEl,
     {transformOrigin:'0 0', rotation:-5,
@@ -752,7 +1028,7 @@ if(morphOK){
   .fromTo('#pc1',{opacity:0,y:26},{opacity:1,y:0,duration:.3},.64);
 }else{
   /* no flight (mobile / reduced motion): dress scene 1 on approach instead */
-  gsap.timeline({scrollTrigger:{trigger:'#process',start:'top 85%',end:'top top',scrub:.5}})
+  gsap.timeline({scrollTrigger:{trigger:'#process',start:'top 85%',end:PIN_LOCK,scrub:.5}})
     .fromTo('#bw1',{opacity:0,x:70},{opacity:1,x:0,duration:.4},.3)
     .fromTo('#phase',{opacity:0,y:-10},{opacity:1,y:0,duration:.25},.4)
     .to('#ph1',{opacity:1,duration:.2},.5)
@@ -789,6 +1065,130 @@ document.querySelectorAll('.rv').forEach(el=>{
   gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'}});
 });
 
+/* the fixed nav flips to its ink variant for exactly the stretch it spends over the
+   dark section — measured at the nav's own bottom edge, the same offset the pin uses */
+ScrollTrigger.create({trigger:'#guard',start:'top '+NAV,end:'bottom '+NAV,
+  toggleClass:{targets:'nav',className:'dark'}});
+
+/* ============ the dark section arrives as a shot, not a fade ============
+   .from() rather than .rv, so nothing is stuck at opacity:0 if this never runs. */
+if(!reduced){
+  gsap.timeline({scrollTrigger:{trigger:'#guard',start:'top 64%'}})
+    .from('#guard h2',{y:26,opacity:0,duration:.7,ease:'power3.out'})
+    .from('#guard .lead',{y:18,opacity:0,duration:.6,ease:'power3.out'},'-=.45')
+    .from('#guard .gm-stage',{y:52,opacity:0,duration:.8,ease:'power3.out'},'-=.3')
+    .from('#guard .gd-note',{y:14,opacity:0,duration:.55,ease:'power2.out'},'-=.25');
+
+  /* ---- the catch, on a loop: helper appears, Guard names it, room locks, it clears.
+     The CSS resting state is the caught frame; each pass starts by resetting to clean.
+     Pauses offscreen so it isn't burning frames nobody sees. */
+  const loop = gsap.timeline({repeat:-1,repeatDelay:1.7,defaults:{ease:'power2.out'},
+    scrollTrigger:{trigger:'#guard',start:'top 70%',end:'bottom top',
+                   toggleActions:'play pause resume pause'}});
+  loop
+    /* reset to the quiet room */
+    .set('.gm-cheat',{y:26,x:0,opacity:0,scale:1,
+      backgroundColor:'rgba(30,21,72,.55)',borderColor:'rgba(188,172,245,.65)'})
+    .set('.gm-cheat > i',{scaleX:0,opacity:1})
+    .set('.gm-line',{scaleX:0,transformOrigin:'left center'})
+    .set('.gm-target',{opacity:0,scale:1.35})
+    .set('.gm-scan',{opacity:0,y:0})
+    .set('.gm-find',{x:14,opacity:0})
+    .set('.gm-empty',{opacity:1})
+    .set('.gm-empty i',{opacity:.25})
+    .set('.gm-lock',{opacity:0,scale:1.5,rotation:-11})
+    .set('.gm-dim',{scaleY:0,transformOrigin:'50% 0%'})
+    .set('.gm-v-sus',{opacity:0,scale:.8})
+    .set('.gm-v-clean',{opacity:1})
+    .set('.gm-call',{x:0})
+    .set('.gm-guard',{borderColor:'rgba(188,172,245,.4)',
+      boxShadow:'0 26px 60px rgba(58,37,150,.45)'})
+    .set('.gm-hb i',{animationDuration:'2.4s',backgroundColor:'#BCACF5'})
+    .set('.gm-wave i',{animationPlayState:'running',opacity:1})
+    .set('.gm-rec b',{opacity:1})
+
+    /* the interview is alive before anything goes wrong: the agent's question
+       types in while the candidate's waveform talks back, and Guard's watch list
+       patrols, one dot at a time — the checklist, shown instead of told */
+    .to('.gm-line',{scaleX:1,duration:.45,stagger:.3,ease:'power1.inOut'},.3)
+    .fromTo('.gm-empty i',{opacity:.25},
+      {opacity:1,duration:.22,stagger:.2,yoyo:true,repeat:1,ease:'power1.inOut'},.35)
+
+    /* the helper MATERIALISES: the flicker of a window that exists but refuses
+       to be captured — then starts feeding answers, and keeps feeding */
+    .to('.gm-cheat',{keyframes:{opacity:[0,.5,.12,.85,.35,1]},duration:.5,ease:'none'},'in')
+    .to('.gm-cheat',{y:0,duration:.5,ease:'power2.out'},'in')
+    .fromTo('.gm-ctag',{opacity:.2},{opacity:.85,duration:.14,repeat:3,yoyo:true},'in+=.08')
+    .to('.gm-cheat > i',{scaleX:1,duration:.3,stagger:.15,ease:'power1.inOut'},'in+=.4')
+    .to('.gm-w60',{scaleX:0,duration:.12},'in+=1.2')
+    .to('.gm-w60',{scaleX:1,duration:.3,ease:'power1.inOut'},'in+=1.38')
+    /* a second patrol pass while the helper types, so the watching never stops */
+    .fromTo('.gm-empty i',{opacity:.25},
+      {opacity:1,duration:.22,stagger:.2,yoyo:true,repeat:1,ease:'power1.inOut'},'in+=.3')
+
+    /* the heartbeat quickens and pings twice — something is on this machine */
+    .add('alert','in+=1.55')
+    .set('.gm-hb i',{animationDuration:'.85s'},'alert')
+    .fromTo('.gm-ping',{opacity:.9,scale:.5},{opacity:0,scale:4,duration:.5,ease:'power1.out'},'alert')
+    .fromTo('.gm-ping',{opacity:.9,scale:.5},{opacity:0,scale:4,duration:.5,ease:'power1.out'},'alert+=.35')
+    .to('.gm-guard',{scale:1.02,duration:.12,yoyo:true,repeat:1,ease:'power1.inOut'},'alert+=.05')
+
+    /* the sweep — and the exact moment the beam crosses the helper, it GLINTS.
+       ease:none keeps the beam linear so the glint lines up with the crossing. */
+    .add('sweep','alert+=.55')
+    .fromTo('.gm-scan',{y:-90,opacity:0},{opacity:1,duration:.08,ease:'none'},'sweep')
+    .to('.gm-scan',{y:()=>document.querySelector('.gm-stage').offsetHeight,duration:.62,ease:'none'},'sweep')
+    .to('.gm-scan',{opacity:0,duration:.1},'sweep+=.54')
+    .to('.gm-cheat',{backgroundColor:'rgba(188,172,245,.3)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
+    .to('.gm-cheat',{borderColor:'rgba(255,255,255,.95)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
+
+    /* caught: brackets snap on, the helper flinches, and the whole instrument
+       turns brass — the state is readable from across the room */
+    .add('lock','sweep+=.62')
+    .to('.gm-target',{opacity:1,scale:1,duration:.26,ease:'back.out(3)'},'lock')
+    .to('.gm-cheat',{x:-2,duration:.05,repeat:3,yoyo:true,ease:'none'},'lock')
+    .to('.gm-guard',{borderColor:'rgba(168,130,59,.7)',
+      boxShadow:'0 26px 60px rgba(58,37,150,.45), 0 0 26px rgba(168,130,59,.22)',duration:.3},'lock')
+    .set('.gm-hb i',{backgroundColor:'#A8823B'},'lock')
+    .to('.gm-v-clean',{opacity:0,duration:.12},'lock+=.1')
+    .to('.gm-v-sus',{opacity:1,scale:1,duration:.28,ease:'back.out(2.2)'},'<')
+    .to('.gm-empty',{opacity:0,duration:.12},'<')
+    .fromTo('.gm-find',{x:14,opacity:0},{x:0,opacity:1,duration:.3,ease:'back.out(1.6)'},'<+=.08')
+
+    /* the room shuts: the dim pulls down like a blind, the stamp slams, the
+       call shudders, and the audio actually stops */
+    .add('shut','lock+=.5')
+    .to('.gm-dim',{scaleY:1,duration:.4,ease:'power2.inOut'},'shut')
+    .to('.gm-lock',{opacity:1,scale:1,rotation:-5,duration:.32,ease:'back.out(1.8)'},'shut+=.14')
+    .to('.gm-call',{x:2.5,duration:.045,repeat:5,yoyo:true,ease:'none'},'shut+=.1')
+    .set('.gm-wave i',{animationPlayState:'paused'},'shut+=.2')
+    .to('.gm-wave i',{opacity:.3,duration:.22},'shut+=.2')
+    .to('.gm-rec b',{opacity:.25,duration:.22},'shut+=.2')
+    /* beaten: the feed goes quiet too */
+    .to('.gm-cheat > i',{opacity:.25,duration:.3},'shut+=.25')
+
+    /* captured, not faded: the brackets close on it as it collapses */
+    .add('quit','shut+=1.6')
+    .to('.gm-cheat',{scale:.85,opacity:0,y:26,duration:.34,ease:'power2.in'},'quit')
+    .to('.gm-target',{scale:.6,opacity:0,duration:.3,ease:'power2.in'},'quit+=.04')
+
+    /* everything clears; the instrument cools back to violet, the room reopens */
+    .add('clear','quit+=.55')
+    .to('.gm-find',{opacity:0,x:10,duration:.26},'clear')
+    .to('.gm-v-sus',{opacity:0,duration:.14},'clear')
+    .to('.gm-v-clean',{opacity:1,duration:.28},'clear+=.1')
+    .to('.gm-empty',{opacity:1,duration:.28},'clear+=.1')
+    .to('.gm-guard',{borderColor:'rgba(188,172,245,.4)',
+      boxShadow:'0 26px 60px rgba(58,37,150,.45)',duration:.4},'clear')
+    .set('.gm-hb i',{backgroundColor:'#BCACF5',animationDuration:'2.4s'},'clear')
+    .to('.gm-dim',{scaleY:0,duration:.5,ease:'power2.inOut'},'clear')
+    .to('.gm-lock',{opacity:0,scale:.92,duration:.26},'clear')
+    .set('.gm-wave i',{animationPlayState:'running'},'clear+=.2')
+    .to('.gm-wave i',{opacity:1,duration:.3},'clear+=.2')
+    .to('.gm-rec b',{opacity:1,duration:.3},'clear+=.2')
+    .set('.gm-cheat',{scale:1});
+}
+
 /* count-up stats */
 document.querySelectorAll('.num').forEach(n=>{
   const to = +n.dataset.to, suf = n.dataset.suffix||'';
@@ -797,6 +1197,18 @@ document.querySelectorAll('.num').forEach(n=>{
     onUpdate:()=>n.textContent=Math.round(o.v)+suf,
     scrollTrigger:{trigger:n,start:'top 85%'}});
 });
+/* the pen circles the zero once it's on screen. Skipped under reduced motion, where
+   the CSS default (no dash) leaves the circle already drawn. */
+if(!reduced){
+  const zc = document.querySelector('.zero-circ path');
+  if(zc){
+    const L = zc.getTotalLength();
+    zc.style.strokeDasharray = L;
+    zc.style.strokeDashoffset = L;
+    gsap.to(zc,{strokeDashoffset:0,duration:.85,ease:'power2.inOut',delay:.55,
+      scrollTrigger:{trigger:'.num-wrap',start:'top 82%'}});
+  }
+}
 
 /* ============ the process timeline ============
    One scrubbed timeline over the tall #process section. Sticky CSS does the
@@ -825,7 +1237,7 @@ const count = (id,to)=>{
 
 const tl = gsap.timeline({
   defaults:{ease:'power2.out'},
-  scrollTrigger:{trigger:'#process',start:'top top',end:'bottom bottom',scrub:.5}
+  scrollTrigger:{trigger:'#process',start:PIN_LOCK,end:'bottom bottom',scrub:.5}
 });
 tl
   /* --- scene 1 · READ (0 → .25) — backdrop/copy already dressed by the flight --- */
