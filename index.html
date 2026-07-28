@@ -3,19 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AgentR · ∞ resumes. One perfect hire.</title>
+<title>AgentR, the hiring assistant that reads every application</title>
 <meta name="description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
+<link rel="icon" href="favicon.ico" sizes="any" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+<link rel="manifest" href="assets/site.webmanifest" />
 <meta name="theme-color" content="#F5F2EC" />
-<link rel="icon" type="image/png" href="agentr-logo.png" />
-<link rel="apple-touch-icon" href="agentr-logo.png" />
+<link rel="canonical" href="https://agentr.global/" />
+<meta property="og:url" content="https://agentr.global/" />
+<meta property="og:site_name" content="AgentR" />
+<meta property="og:locale" content="en" />
+<meta property="og:image" content="https://agentr.global/assets/android-chrome-512x512.png" />
+<meta property="og:image:alt" content="AgentR" />
 <!-- social cards. og:image must be an absolute URL: update the domain if this
      moves off GitHub Pages -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AgentR · ∞ resumes. One perfect hire." />
+<meta property="og:title" content="AgentR, the hiring assistant that reads every application" />
 <meta property="og:description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
-<meta property="og:image" content="https://vjkrishnadas.github.io/agents-demo-waitlist/agentr-logo.png" />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="AgentR · ∞ resumes. One perfect hire." />
+<meta name="twitter:title" content="AgentR, the hiring assistant that reads every application" />
 <meta name="twitter:description" content="AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You make every call." />
 <script>
 /* must run before the browser decides to restore scroll on reload */
@@ -45,7 +53,10 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     --nav:70px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:auto}
+  /* reserve the scrollbar gutter permanently. The gate locks scroll with
+     overflow:hidden, which takes the scrollbar away; without a reserved gutter
+     the whole page jumps 15px sideways the moment the gate closes. */
+  html{scroll-behavior:auto;scrollbar-gutter:stable}
   html.lenis,html.lenis body{height:auto}
   .lenis.lenis-smooth{scroll-behavior:auto!important}
   body{
@@ -107,6 +118,46 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   @media(max-width:820px){.nav-links a:not(.btn){display:none}}
 
   .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,5vw,44px)}
+
+  /* ---------------- nav mega-menu ---------------- */
+  .navdrop{position:relative}
+  .navdrop-t{display:flex;align-items:center;gap:7px;background:none;border:none;padding:6px 0;
+    font:inherit;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;
+    position:relative;transition:color .2s}
+  .navdrop-t svg{transition:transform .3s;margin-top:1px}
+  .navdrop-t::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:2px;
+    background:var(--brass);border-radius:2px;transition:right .25s ease}
+  .navdrop:hover .navdrop-t,.navdrop.on .navdrop-t{color:var(--text)}
+  .navdrop:hover .navdrop-t::after,.navdrop.on .navdrop-t::after{right:0}
+  .navdrop.on .navdrop-t svg{transform:rotate(180deg)}
+
+  .navdrop-p{position:absolute;top:calc(100% + 16px);left:50%;width:min(600px,86vw);
+    /* pull back half the panel's own width. max(), not min(): both operands are
+       negative, so min() would pick the *wider* pull and shove the panel left. */
+    margin-left:max(-300px,-43vw);background:var(--card);border:1px solid var(--line);
+    border-radius:20px;box-shadow:var(--shadow-md);padding:26px 26px 22px;
+    opacity:0;visibility:hidden;transform:translateY(-8px);
+    transition:opacity .28s,transform .28s cubic-bezier(.2,.7,.2,1),visibility .28s}
+  .navdrop.on .navdrop-p{opacity:1;visibility:visible;transform:none}
+  /* an invisible bridge so the pointer can cross the gap without the panel closing */
+  .navdrop-p::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}
+  .dd-label{display:block;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--muted);margin-bottom:16px}
+  .dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+  .dd-grid a{display:flex;gap:14px;align-items:flex-start;padding:12px 12px;border-radius:13px;
+    transition:background .22s}
+  .dd-grid a:hover{background:var(--accent-tint)}
+  /* one accent, four steps: the live site tints each number a different hue, which
+     reads as decoration here. Violet is the machine acting, so all four share it. */
+  .dd-n{flex-shrink:0;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:var(--accent-tint);color:var(--accent-deep);
+    font-family:'DM Mono',monospace;font-size:14px;font-weight:500;transition:background .22s}
+  .dd-grid a:hover .dd-n{background:var(--accent);color:#fff}
+  .dd-x b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em;color:var(--text)}
+  .dd-x i{display:block;font-style:normal;margin-top:3px;font-size:13px;line-height:1.5;
+    color:var(--muted)}
+  @media(max-width:900px){.navdrop{display:none}}
+
 
   /* ---------------- hero ---------------- */
   header{position:relative;padding:170px 0 110px;text-align:center;overflow:hidden}
@@ -348,7 +399,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   /* leaderboard */
   .board{
-    position:absolute;right:2%;top:50%;transform:translateY(-50%) translateX(40px);
+    position:absolute;right:2%;top:50%;transform:translateY(-50%);
     width:min(340px,30%);opacity:0;
   }
   @media(max-width:960px){
@@ -358,7 +409,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .board .b-title{font-size:13px;font-weight:800;margin-bottom:10px;display:flex;justify-content:space-between;color:var(--muted)}
   /* the real grouping: Top Picks / Contenders / Prospects */
   .bk-h{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;color:var(--muted);
-    margin:12px 0 7px;opacity:0;transform:translateX(26px)}
+    margin:12px 0 7px;opacity:0}
   .bk-h::before{content:"";width:7px;height:7px;border-radius:50%;background:#C9CEC9}
   .bk-h.top{color:var(--accent-deep)}
   .bk-h.top::before{background:var(--accent)}
@@ -368,7 +419,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .brow{
     display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);
     border-radius:13px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow-sm);
-    font-size:13px;opacity:0;transform:translateX(26px);
+    font-size:13px;opacity:0;
   }
   .brow .rk{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);width:20px}
   .brow b{flex:1}
@@ -399,21 +450,25 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .sys .tagline{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent-deep);margin-top:14px}
 
   /* ---------------- proctoring: lights down ----------------
-     The one dark section on an ivory page. It is the moment the room goes quiet and
-     something starts watching, so it gets its own ground rather than another card. */
-  #guard{position:relative;color:#fff;overflow:hidden;
-    background:linear-gradient(150deg,#1E1548,#2C1F6E 55%,#1E1548);
-    padding:clamp(72px,9vw,116px) 0}
-  /* violet cast from above + the same dot grid as the hero, dimmed */
+     Same paper as the rest of the page. The scene is the contrast, so the section
+     does not need a ground of its own. */
+  #guard{position:relative;overflow:hidden;padding:clamp(72px,9vw,116px) 0}
+  /* the same dot grid as the hero, faint enough to read as texture */
   #guard::before{content:"";position:absolute;inset:0;pointer-events:none;
-    background:
-      radial-gradient(62% 46% at 50% -4%,rgba(112,83,232,.26),transparent 72%),
-      radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1.4px);
-    background-size:auto,26px 26px}
+    background:radial-gradient(circle,rgba(23,20,37,.055) 1px,transparent 1.4px);
+    background-size:26px 26px}
+  #guard::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(58% 52% at 50% 62%,#FFFDF7,rgba(255,253,247,0) 70%)}
   #guard > .wrap{position:relative;z-index:1}
-  #guard h2{color:#fff}
-  #guard h2 .serif{color:#BCACF5}
-  #guard .lead{color:#B6ACD8}
+  /* a rule with the word set into it: marks where this section starts and cuts it
+     off from the page above, which a background wash used to do */
+  .gd-band{display:flex;align-items:center;gap:18px;margin-bottom:clamp(34px,6vh,64px)}
+  .gd-band::before,.gd-band::after{content:"";flex:1;height:1px;background:var(--line)}
+  .gd-band span{font-family:'DM Mono',ui-monospace,monospace;font-size:11.5px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--brass-deep)}
+  /* the same rule closes the section, so the whole thing sits between two of them */
+  .gd-band.end{margin:clamp(28px,4vh,46px) 0 0}
+  #guard h2 .serif{color:var(--accent)}
 
   /* ---- the Guard scene: interview + invisible helper + the catch ----
      Authored in the CAUGHT state: helper visible, finding shown, room locked. The GSAP
@@ -425,52 +480,52 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   /* the interview room */
   .gm-call{position:absolute;left:0;top:0;width:70%;height:100%;
-    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);
-    border-radius:16px;overflow:hidden;backdrop-filter:blur(2px)}
+    background:var(--card);border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;box-shadow:var(--shadow-md)}
   .gm-bar{display:flex;align-items:center;gap:6px;padding:11px 14px;
-    border-bottom:1px solid rgba(255,255,255,.1)}
-  .gm-bar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18)}
+    background:rgba(84,56,204,.05);border-bottom:1px solid rgba(84,56,204,.12)}
+  .gm-bar i{width:9px;height:9px;border-radius:50%;background:rgba(84,56,204,.18)}
   .gm-bar span{margin-left:8px;font-family:'DM Mono',monospace;font-size:10px;
-    letter-spacing:.05em;color:rgba(255,255,255,.45)}
+    letter-spacing:.05em;color:var(--muted)}
   .gm-rec{margin-left:auto;display:flex;align-items:center;gap:5px;font-style:normal;
-    font-family:'DM Mono',monospace;font-size:9.5px;color:rgba(255,255,255,.5)}
-  .gm-rec b{width:7px;height:7px;border-radius:50%;background:#BCACF5}
+    font-family:'DM Mono',monospace;font-size:9.5px;color:var(--muted)}
+  .gm-rec b{width:7px;height:7px;border-radius:50%;background:var(--accent)}
   .gm-body{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;height:calc(100% - 38px)}
-  .gm-tile{position:relative;border-radius:11px;background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.09);padding:12px}
+  .gm-tile{position:relative;border-radius:11px;background:#F1EEFA;
+    border:1px solid rgba(84,56,204,.12);padding:12px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.7)}
   .gm-av{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
     background:var(--accent);color:#fff;font-weight:800;font-size:13px}
-  .gm-av2{background:rgba(255,255,255,.14)}
+  .gm-av2{background:rgba(84,56,204,.12);color:var(--accent-deep)}
   .gm-name{position:absolute;left:12px;bottom:10px;font-family:'DM Mono',monospace;
-    font-size:9.5px;color:rgba(255,255,255,.55)}
+    font-size:9.5px;color:var(--muted)}
   .gm-wave{position:absolute;right:12px;bottom:12px;display:flex;align-items:flex-end;gap:3px;height:16px}
-  .gm-wave i{width:3px;border-radius:2px;background:#BCACF5;animation:gmwv 1s ease-in-out infinite}
+  .gm-wave i{width:3px;border-radius:2px;background:var(--accent);animation:gmwv 1s ease-in-out infinite}
   .gm-wave i:nth-child(2){animation-delay:.15s}.gm-wave i:nth-child(3){animation-delay:.3s}
   .gm-wave i:nth-child(4){animation-delay:.45s}.gm-wave i:nth-child(5){animation-delay:.6s}
   @keyframes gmwv{0%,100%{height:22%}50%{height:100%}}
   .gm-line{position:absolute;left:12px;top:58%;height:7px;width:64%;border-radius:4px;
-    background:rgba(255,255,255,.16)}
+    background:rgba(84,56,204,.18)}
   .gm-short{top:72%;width:42%}
   /* the room darkening while locked */
-  .gm-dim{position:absolute;inset:0;background:rgba(23,15,58,.66);opacity:1;
+  .gm-dim{position:absolute;inset:0;background:rgba(245,242,236,.82);opacity:1;
     transition:none;pointer-events:none}
   .gm-lock{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-5deg);
     text-align:center;border:2px solid var(--brass);border-radius:10px;padding:9px 18px;
-    color:var(--brass);background:rgba(30,21,72,.6)}
+    color:var(--brass-deep);background:rgba(255,255,255,.9)}
   .gm-lock b{display:block;font-family:'DM Mono',monospace;font-size:13px;letter-spacing:.08em}
   .gm-lock small{display:block;margin-top:2px;font-family:'Caveat',cursive;font-weight:600;
     font-size:15px;opacity:.85}
 
   /* the invisible helper: ghost-dashed, the thing screen shares can't see */
   .gm-cheat{position:absolute;left:44%;bottom:7%;width:32%;z-index:2;
-    border:1.5px dashed rgba(188,172,245,.65);border-radius:13px;padding:30px 16px 16px;
-    background:rgba(30,21,72,.55);backdrop-filter:blur(3px);
-    box-shadow:0 22px 50px rgba(0,0,0,.45)}
+    border:1.5px dashed rgba(84,56,204,.55);border-radius:13px;padding:30px 16px 16px;
+    background:#fff;box-shadow:0 24px 55px rgba(40,25,90,.26)}
   .gm-ctag{position:absolute;top:9px;left:16px;font-family:'DM Mono',monospace;
-    font-size:8.5px;letter-spacing:.06em;color:#BCACF5;opacity:.85}
-  .gm-cheat b{display:block;font-size:12.5px;font-weight:800;color:#fff;margin-bottom:9px}
+    font-size:8.5px;letter-spacing:.06em;color:var(--accent);opacity:.85}
+  .gm-cheat b{display:block;font-size:12.5px;font-weight:800;color:var(--text);margin-bottom:9px}
   /* > only: .gm-target's corner <i>s must not become answer lines */
-  .gm-cheat > i{display:block;height:7px;border-radius:4px;background:rgba(196,181,253,.4);
+  .gm-cheat > i{display:block;height:7px;border-radius:4px;background:rgba(84,56,204,.22);
     margin-top:6px;transform-origin:left center}
   .gm-w60{width:60%}
   /* brass target brackets, resting ON (the caught frame) */
@@ -486,13 +541,13 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   /* the sweep Guard runs over the machine; driven by the loop, resting off */
   .gm-scan{position:absolute;left:0;right:0;top:0;height:90px;z-index:4;opacity:0;
     pointer-events:none;
-    background:linear-gradient(180deg,transparent,rgba(188,172,245,.2) 46%,rgba(188,172,245,.2) 54%,transparent)}
+    background:linear-gradient(180deg,transparent,rgba(84,56,204,.16) 46%,rgba(84,56,204,.16) 54%,transparent)}
 
   /* the Guard: the lit instrument */
   .gm-guard{position:absolute;right:0;top:6%;width:34%;z-index:3;
-    background:linear-gradient(170deg,rgba(112,83,232,.32),rgba(84,56,204,.13));
-    border:1px solid rgba(188,172,245,.4);border-radius:15px;padding:15px 16px;
-    box-shadow:0 26px 60px rgba(58,37,150,.45)}
+    background:linear-gradient(165deg,#2D1F72,#1E1548);border:1px solid rgba(84,56,204,.5);
+    border-radius:15px;padding:15px 16px;
+    box-shadow:0 2px 6px rgba(30,21,72,.2),0 34px 74px rgba(30,21,72,.42)}
   .gm-ghead{display:flex;align-items:center;gap:7px;color:#fff}
   .gm-ghead svg{color:#BCACF5;flex-shrink:0}
   .gm-ghead span{font-size:12.5px;font-weight:800}
@@ -511,25 +566,25 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .gm-vrow{position:relative;margin-top:12px;height:24px}
   .gm-v{position:absolute;left:0;top:0;font-family:'DM Mono',monospace;font-size:10.5px;
     letter-spacing:.06em;padding:5px 12px;border-radius:999px}
-  .gm-v-clean{background:rgba(188,172,245,.16);color:#BCACF5;opacity:0}
+  .gm-v-clean{background:rgba(188,172,245,.18);color:#BCACF5;opacity:0}
   .gm-v-sus{background:var(--brass);color:#170F04}
   /* one slot, two occupants: the watch list while the room is quiet, the finding when
      it lands. Fixed height so the floating panel never pops as they swap. */
   .gm-fslot{position:relative;margin-top:11px;height:82px;
-    border-top:1px solid rgba(255,255,255,.14)}
+    border-top:1px solid rgba(255,255,255,.16)}
   /* the checklist, living inside the scene: what Guard is watching, row by row */
   .gm-empty{position:absolute;inset:11px 0 0;display:flex;flex-direction:column;gap:6px;
     opacity:0}
   .gm-empty span{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;
-    font-size:9.5px;letter-spacing:.04em;color:rgba(255,255,255,.55);white-space:nowrap}
-  .gm-empty i{width:5px;height:5px;border-radius:50%;background:#BCACF5;opacity:.25;
+    font-size:9.5px;letter-spacing:.04em;color:rgba(255,255,255,.6);white-space:nowrap}
+  .gm-empty i{width:5px;height:5px;border-radius:50%;background:#BCACF5;opacity:.3;
     flex-shrink:0}
   .gm-find{position:absolute;inset:11px 0 0;display:flex;gap:9px;align-items:flex-start}
   .gm-find i{width:8px;height:8px;border-radius:50%;background:var(--brass);
     flex-shrink:0;margin-top:3px}
   .gm-find b{display:block;font-size:11.5px;font-weight:800;color:#fff}
   .gm-find span{display:block;margin-top:2px;font-size:10px;line-height:1.45;
-    color:rgba(255,255,255,.55)}
+    color:rgba(255,255,255,.6)}
 
   /* narrow: room on top, guard below-left, helper below-right */
   @media(max-width:640px){
@@ -538,7 +593,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     .gm-cheat{left:0;bottom:8%;width:40%}
   }
 
-  .gd-note{margin-top:30px;text-align:center;font-size:23px;color:var(--brass);
+  .gd-note{margin-top:clamp(38px,6vh,64px);text-align:center;font-size:23px;color:var(--brass-deep);
     transform:rotate(-1deg)}
 
   @media(prefers-reduced-motion:reduce){.gm-hb i,.gm-wave i{animation:none}}
@@ -553,24 +608,26 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
     font-size:clamp(52px,6vw,78px);letter-spacing:0;color:var(--accent-deep);line-height:1;
     display:inline-block}
   .stat .lbl{color:var(--muted);font-size:13.5px;margin-top:12px;line-height:1.5;font-weight:600}
-  /* the zero gets circled by the brass pen, same ink as the resume's claim circles */
-  .num-wrap{position:relative;display:inline-block}
-  /* sized well past the glyph: hugging it reads as part of the italic zero,
-     not as a pen circling it */
-  .zero-circ{position:absolute;left:-58%;top:-19%;width:216%;height:138%;
-    color:var(--brass);pointer-events:none;transform:rotate(-4deg)}
 
-  /* founder note */
-  /* the founder note is an actual letter on the desk */
-  .note{max-width:660px;margin:0 auto;background:var(--card);border:1px solid var(--line);
-    border-radius:18px;padding:clamp(32px,5vw,52px);box-shadow:var(--shadow-md);
-    transform:rotate(-.6deg)}
-  .note .note-kicker{font-family:'Caveat',cursive;font-weight:600;font-size:26px;
+  /* founder note: set as an editorial column under a rule, the same 2px rule the
+     stats sit under. A floating rounded card said "widget"; this says "written". */
+  /* not a card and not a grid: a short letter set on the page itself, the way the
+     handwritten notes elsewhere on this page sit on it */
+  .note{max-width:760px;margin:0 auto;text-align:center;
+    border-top:2px solid var(--text);padding-top:clamp(28px,3.5vw,44px)}
+  .note .note-kicker{font-family:'Caveat',cursive;font-weight:600;font-size:27px;
     color:var(--accent-deep);transform:rotate(-1.5deg);display:inline-block}
-  .note .note-body{font-size:clamp(16px,1.8vw,18px);font-weight:500;
-    line-height:1.7;margin-top:18px;color:#332E45}
-  .note .note-sign{font-family:'Caveat',cursive;font-weight:600;font-size:27px;color:#3A403A;
-    margin-top:26px;transform:rotate(-1deg);display:inline-block}
+  .note .note-lead{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;
+    font-size:clamp(25px,3.5vw,40px);line-height:1.26;letter-spacing:-.012em;color:var(--text);
+    margin-top:20px}
+  .note .note-body{font-size:clamp(16px,1.7vw,17.5px);font-weight:500;line-height:1.75;
+    margin:26px auto 0;color:var(--muted);max-width:52ch}
+  .note .note-sign{position:relative;display:inline-block;margin-top:38px;
+    font-family:'Caveat',cursive;font-weight:600;font-size:27px;color:var(--brass-deep);
+    transform:rotate(-1deg)}
+  /* the pen underlines its own signature, same ink as the circled zero */
+  .note .sign-line{position:absolute;left:-6%;bottom:-11px;width:112%;height:11px;
+    color:var(--brass);pointer-events:none}
 
   .cta-band{
     max-width:940px;margin:0 auto;text-align:center;border-radius:30px;
@@ -584,12 +641,199 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   .cta-band .form-note{color:#8F978F}
   .cta-band .form-ok{background:rgba(112,83,232,.15);border-color:rgba(112,83,232,.4);color:var(--accent-2)}
 
-  footer{padding:52px clamp(20px,6vw,72px) 44px}
-  .foot{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;
-    flex-wrap:wrap;gap:16px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:34px}
-  .foot .logo{font-size:17px}
-  .foot-links{display:flex;gap:24px;font-weight:600}
-  .foot-links a:hover{color:var(--text)}
+  /* third-party trust marks. They arrive in their own brands, so they get a plain
+   row rather than any attempt to restyle them into the palette. */
+  .foot-badges{display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+    margin-top:clamp(22px,3vh,36px);padding-bottom:clamp(26px,3.5vh,38px)}
+  /* one height for all three, so the row sits on a single baseline */
+  .foot-badges img{display:block;height:44px;width:auto}
+  .foot-li{display:grid;place-items:center;width:44px;height:44px;border-radius:11px;
+    border:1px solid var(--line);background:var(--card);color:var(--text);
+    transition:color .2s,border-color .2s,transform .2s}
+  .foot-li:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+
+  /* the footer carries the sitemap: legal pages have to be reachable from here */
+  footer{padding:0 clamp(20px,6vw,72px) 40px}
+  .foot-in{max-width:1120px;margin:0 auto;border-top:1px solid var(--line)}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;padding:48px 0 32px}
+  @media(max-width:820px){.foot-grid{grid-template-columns:1fr 1fr;gap:26px}}
+  @media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+  .foot-brand img{height:26px;width:auto;display:block}
+  .foot-brand p{color:var(--muted);font-size:14.5px;margin-top:14px;max-width:34ch;line-height:1.6}
+  .foot-col b{display:block;font-family:'DM Mono',monospace;font-size:11.5px;font-weight:500;
+    color:var(--muted);margin-bottom:12px}
+  .foot-col a{display:block;padding:5px 0;font-size:15px;color:var(--text);opacity:.8;
+    transition:opacity .2s,color .2s}
+  .foot-col a:hover{opacity:1;color:var(--accent)}
+  .foot-base{border-top:1px solid var(--line);padding:20px 0 0;display:flex;flex-wrap:wrap;gap:14px;
+    justify-content:space-between;color:var(--muted);font-size:13.5px}
+
+  /* ---------------- opening gate: brand left, three ways in on the right ----------------
+     Ported from gate-v9-experiment. The v9 build had no hero, so its picked sheet flew
+     straight onto the pinned stage. Here the hero sits between, so the gate simply lifts. */
+  #gate{position:fixed;inset:0;z-index:300;background:var(--paper);
+    display:grid;grid-template-columns:clamp(300px,37%,600px) 1fr;
+    overflow-y:auto;overflow-x:hidden}
+  #gate::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:radial-gradient(circle,rgba(23,20,37,.05) 1px,transparent 1.4px);
+    background-size:26px 26px}
+
+  .g-left{position:relative;z-index:1;display:flex;flex-direction:column;
+    padding:clamp(34px,4vw,60px);border-right:1px solid var(--line)}
+  .g-logo{height:28px;width:auto;align-self:flex-start}
+  .g-mid{margin:auto 0}
+  .g-title{font-size:clamp(30px,3.3vw,46px);font-weight:800;letter-spacing:-.035em;
+    line-height:1.06;color:var(--text)}
+  .g-title .hl{color:var(--accent)}
+  .g-what{margin-top:20px;max-width:34ch;font-size:17px;line-height:1.7;
+    font-weight:500;color:var(--muted)}
+  .g-lead{margin-top:30px;font-family:'Caveat',cursive;font-weight:600;
+    font-size:clamp(24px,2.1vw,30px);color:var(--brass-deep);
+    clip-path:inset(-25% -4% -25% 0)}
+  .g-lead b{font-weight:600}
+
+  .g-rows{position:relative;z-index:1;display:flex;flex-direction:column}
+  .grow{position:relative;flex:1 1 0;min-height:0;overflow:hidden;
+    display:flex;align-items:center;gap:clamp(16px,2.2vw,30px);
+    /* full-bleed row, capped content: past 1180px the padding grows instead of the gap */
+    padding-block:0;padding-inline:max(clamp(30px,4vw,58px),calc((100% - 1180px)/2));
+    text-align:left;
+    background:none;border:none;cursor:pointer;font:inherit;color:inherit;
+    transition:flex-grow .55s cubic-bezier(.2,.7,.2,1),background-color .4s,box-shadow .4s}
+  .grow + .grow{border-top:1px solid var(--line)}
+  .g-rows:hover .grow{flex-grow:.9}
+  .g-rows .grow:hover,.grow.opening{flex-grow:1.28}
+  /* the sheet of paper comes forward into the light, and the pen marks your choice.
+     A flat violet flood was louder but said nothing; this uses both inks the way the
+     rest of the site does: brass is the hand, violet is the machine. */
+  .grow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;z-index:1;
+    background:var(--accent);transform:scaleY(0);transform-origin:top;
+    transition:transform .5s cubic-bezier(.66,0,.2,1)}
+  .grow:hover::before,.grow.opening::before{transform:scaleY(1)}
+  .grow:hover,.grow.opening{background:var(--card);box-shadow:var(--shadow-md)}
+  .grow > *{position:relative;z-index:1}
+
+  .grow .txt{flex:0 1 auto;min-width:0;margin-right:auto;
+    transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  .grow .q::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:2px;
+    border-radius:2px;background:var(--brass);transform:scaleX(0);transform-origin:left center;
+    transition:transform .55s cubic-bezier(.66,0,.2,1) .05s}
+  .grow:hover .q::after,.grow.opening .q::after{transform:scaleX(1)}
+  .grow .meta{display:block;margin-top:14px;font-family:'DM Mono',monospace;font-size:11.5px;
+    letter-spacing:.04em;color:var(--muted);opacity:.75;transition:color .3s .16s,opacity .3s .16s}
+  .grow:hover .meta,.grow.opening .meta{color:var(--brass-deep);opacity:1}
+  .grow .q{position:relative;display:inline-block;font-family:'Caveat',cursive;font-weight:600;line-height:1.1;
+    font-size:clamp(23px,2.4vw,33px);color:var(--text);transition:color .3s .1s}
+  /* real box, not just a visual shrink — scale() alone leaves the row claiming 172px */
+  .grow .vizwrap{flex-shrink:0;position:relative;width:clamp(170px,17vw,255px);
+    height:clamp(130px,13vw,196px);will-change:transform}
+  /* a warm pool under the paper so it sits on the desk rather than floating flat */
+  .grow .vizwrap::before{content:"";position:absolute;left:50%;top:56%;width:150%;height:120%;
+    transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+    background:radial-gradient(closest-side,rgba(168,130,59,.10),transparent 72%);
+    opacity:0;transition:opacity .45s}
+  .grow:hover .vizwrap::before,.grow.opening .vizwrap::before{opacity:1}
+  .grow .vizwrap .viz{position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(var(--vz,1.28));transform-origin:50% 50%}
+  .grow .go{flex-shrink:0;font-size:19px;font-weight:800;color:var(--accent);
+    opacity:0;transform:translateX(-10px);transition:.35s}
+
+  .grow:hover .go,.grow.opening .go{color:var(--accent);opacity:1;transform:none}
+  /* the row leans into the sweep */
+  .grow:hover .txt,.grow.opening .txt{transform:translateX(14px)}
+  .grow:hover .viz-row i,.grow.opening .viz-row i,
+  .grow:hover .viz-one i,.grow.opening .viz-one i{box-shadow:0 12px 26px rgba(23,20,37,.16)}
+  /* the paper fans open on `translate`. Not left/top, which relayout the whole row
+     every frame, and not `transform`, which the infinite keyframes already own. */
+  .viz i,.viz .ring{transition:box-shadow .35s,border-color .35s,color .4s,
+    translate .5s cubic-bezier(.34,1.3,.5,1)}
+  /* one comes off the top of each pile, in turn. The piles themselves stay put. */
+  .viz-pile i:nth-child(8),.viz-pile i:nth-child(18),.viz-pile i:nth-child(25){
+    transition:box-shadow .35s,translate .55s cubic-bezier(.34,1.28,.5,1)}
+  .grow:hover .viz-pile i:nth-child(8),.grow.opening .viz-pile i:nth-child(8){
+    translate:-10px -20px;z-index:4;box-shadow:0 20px 32px rgba(23,20,37,.2);transition-delay:.06s}
+  .grow:hover .viz-pile i:nth-child(18),.grow.opening .viz-pile i:nth-child(18){
+    translate:0 -26px;z-index:5;box-shadow:0 22px 36px rgba(23,20,37,.24)}
+  .grow:hover .viz-pile i:nth-child(25),.grow.opening .viz-pile i:nth-child(25){
+    translate:10px -20px;z-index:4;box-shadow:0 20px 32px rgba(23,20,37,.2);transition-delay:.12s}
+  .grow:hover .viz-row i:nth-child(1),.grow.opening .viz-row i:nth-child(1){translate:-12px 0}
+  .grow:hover .viz-row i:nth-child(3),.grow.opening .viz-row i:nth-child(3){translate:12px 0}
+
+  /* one sheet breaks from the pack: the one you would actually have read */
+  .grow:hover .viz-row i:nth-child(2),.grow.opening .viz-row i:nth-child(2){translate:0 -19px;
+    z-index:3;box-shadow:0 22px 36px rgba(23,20,37,.24)}
+  /* the pen comes down onto the claim it is asking about */
+  .grow:hover .viz-one .ring,.grow.opening .viz-one .ring{translate:-6px 7px;
+    border-color:var(--brass-deep);background:rgba(168,130,59,.14)}
+
+  /* ---- living paper assets ---- */
+  .viz{position:relative;width:172px;height:132px;flex-shrink:0}
+  .viz i{position:absolute;display:block;width:54px;height:74px;border-radius:5px;
+    background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow-sm);
+    background-image:repeating-linear-gradient(180deg,transparent 0 7px,#E6E1D3 7px 8.5px);
+    background-repeat:no-repeat;background-size:62% 34px;background-position:8px 13px;
+    transition:box-shadow .3s,border-color .3s,opacity .35s}
+  /* volume: three piles on the desk, not one tidy document. The thickness is the point. */
+  .viz-pile i:nth-child(1){left:3px;top:58px;--r:-2deg}
+  .viz-pile i:nth-child(2){left:4px;top:54px;--r:2deg}
+  .viz-pile i:nth-child(3){left:1px;top:50px;--r:-3deg}
+  .viz-pile i:nth-child(4){left:7px;top:46px;--r:1deg}
+  .viz-pile i:nth-child(5){left:1px;top:42px;--r:-1deg}
+  .viz-pile i:nth-child(6){left:5px;top:38px;--r:-3deg}
+  .viz-pile i:nth-child(7){left:5px;top:34px;--r:-2deg}
+  .viz-pile i:nth-child(8){left:1px;top:30px;--r:-3deg}
+  .viz-pile i:nth-child(9){left:59px;top:62px;--r:0deg}
+  .viz-pile i:nth-child(10){left:56px;top:58px;--r:-2deg}
+  .viz-pile i:nth-child(11){left:56px;top:54px;--r:1deg}
+  .viz-pile i:nth-child(12){left:59px;top:50px;--r:-3deg}
+  .viz-pile i:nth-child(13){left:62px;top:46px;--r:1deg}
+  .viz-pile i:nth-child(14){left:56px;top:42px;--r:-2deg}
+  .viz-pile i:nth-child(15){left:61px;top:38px;--r:2deg}
+  .viz-pile i:nth-child(16){left:60px;top:34px;--r:-3deg}
+  .viz-pile i:nth-child(17){left:60px;top:30px;--r:1deg}
+  .viz-pile i:nth-child(18){left:59px;top:26px;--r:-3deg}
+  .viz-pile i:nth-child(19){left:112px;top:56px;--r:-3deg}
+  .viz-pile i:nth-child(20){left:115px;top:52px;--r:3deg}
+  .viz-pile i:nth-child(21){left:112px;top:48px;--r:-1deg}
+  .viz-pile i:nth-child(22){left:114px;top:44px;--r:-2deg}
+  .viz-pile i:nth-child(23){left:115px;top:40px;--r:-3deg}
+  .viz-pile i:nth-child(24){left:115px;top:36px;--r:-1deg}
+  .viz-pile i:nth-child(25){left:115px;top:32px;--r:3deg}
+  .viz-pile i:nth-child(8){animation:shuffle 4.8s ease-in-out -0.0s infinite}
+  .viz-pile i:nth-child(18){animation:shuffle 4.8s ease-in-out -1.6s infinite}
+  .viz-pile i:nth-child(25){animation:shuffle 4.8s ease-in-out -3.2s infinite}
+  /* fit: same angle, same lines, same everything. Sameness is the whole complaint,
+     so the sheets are carbon copies rather than three tilted at different angles. */
+  .viz-row i{top:29px;--r:0deg}
+  .viz-row i:nth-child(1){left:4px;animation:stepup 5.1s ease-in-out infinite}
+  .viz-row i:nth-child(2){left:59px;animation:stepup 5.1s ease-in-out -1.7s infinite}
+  .viz-row i:nth-child(3){left:114px;animation:stepup 5.1s ease-in-out -3.4s infinite}
+  @keyframes stepup{0%,64%,100%{transform:rotate(var(--r)) translateY(0)}
+    76%,88%{transform:rotate(var(--r)) translateY(-10px)}}
+  /* trust: the glass keeps checking */
+  .viz-one i{left:44px;top:12px;width:78px;height:108px;
+    background-size:64% 44px;background-position:11px 16px}
+  /* the one line on the page that is in question */
+  .viz-one i::after{content:"";position:absolute;left:11px;top:72px;width:52%;height:4px;
+    border-radius:2px;background:var(--brass)}
+  .viz-one .ring{position:absolute;left:52px;top:50px;width:58px;height:58px;border-radius:50%;
+    border:3px solid var(--brass);background:rgba(168,130,59,.07);
+    animation:sweep 5.4s ease-in-out infinite}
+  .viz-one .ring::after{content:"";position:absolute;right:-14px;bottom:-10px;width:20px;height:3px;
+    border-radius:2px;background:var(--brass);transform:rotate(42deg)}
+  @keyframes sweep{0%,100%{transform:translate(0,0)}34%{transform:translate(-18px,-16px)}
+    68%{transform:translate(6px,8px)}}
+
+  @media(max-width:900px){
+    #gate{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+    .g-left{border-right:none;border-bottom:1px solid var(--line);padding:26px}
+    .g-mid{margin:20px 0}
+    .g-lead{font-size:30px}
+    .g-what{font-size:14px;margin-top:14px}
+    .grow{padding:22px 24px;gap:16px}
+    .grow .q{font-size:23px}
+    .grow .vizwrap{display:none}
+  }
 
   .rv{opacity:0;transform:translateY(36px)}
   @media(prefers-reduced-motion:reduce){
@@ -600,15 +844,69 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 </head>
 <body>
 
+<!-- ================= OPENING GATE ================= -->
+<section id="gate" aria-label="Choose where it hurts">
+  <div class="g-left">
+    <img class="g-logo" src="agentr-logo.png" alt="AgentR" />
+    <div class="g-mid">
+      <h1 class="g-title">Your <span class="hl">AI-powered</span><br/>hiring assistant.</h1>
+      <p class="g-what">It reads. It checks. It interviews.<br/>You still decide.</p>
+      <div class="g-lead">start where it hurts <b>&#8594;</b></div>
+    </div>
+  </div>
+  <div class="g-rows">
+    <button class="grow" type="button" data-v="volume">
+      <span class="txt">
+        <span class="q">"I can't read two hundred."</span>
+        <span class="meta">214 applied &middot; 1 seat</span>
+      </span>
+      <span class="vizwrap" aria-hidden="true"><span class="viz viz-pile">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+      <span class="go">&#8594;</span>
+    </button>
+    <button class="grow" type="button" data-v="fit">
+      <span class="txt">
+        <span class="q">"They all look the same."</span>
+        <span class="meta">30 strong &middot; 1 seat</span>
+      </span>
+      <span class="vizwrap" aria-hidden="true"><span class="viz viz-row">
+        <i></i><i></i><i></i></span></span>
+      <span class="go">&#8594;</span>
+    </button>
+    <button class="grow" type="button" data-v="trust">
+      <span class="txt">
+        <span class="q">"I can't tell what's true."</span>
+        <span class="meta">12 claims &middot; 1 flagged</span>
+      </span>
+      <span class="vizwrap" aria-hidden="true"><span class="viz viz-one">
+        <i></i><span class="ring"></span></span></span>
+      <span class="go">&#8594;</span>
+    </button>
+  </div>
+</section>
+
 <div id="progress"></div>
 
 <nav id="nav">
   <div class="nav-in">
     <a class="logo" href="#top" aria-label="AgentR"><img class="mark" src="agentr-logo.png" alt="AgentR" /></a>
     <div class="nav-links">
-      <a href="#process">How it works</a>
-      <a href="#system">What it won't do</a>
-      <a href="#stats">The numbers</a>
+      <div class="navdrop">
+        <button class="navdrop-t" type="button" aria-expanded="false" aria-controls="dd-process">
+          Process <svg width="11" height="7" viewBox="0 0 11 7" fill="none" aria-hidden="true"><path d="M1 1.5 5.5 5.5 10 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="navdrop-p" id="dd-process" role="group" aria-label="Process">
+          <div class="dd-grid">
+            <a href="smarter-screening/"><span class="dd-n">01</span><span class="dd-x"><b>Smarter Screening</b><i>Read and score every application, not just the top of the pile.</i></span></a>
+            <a href="faster-scheduling/"><span class="dd-n">03</span><span class="dd-x"><b>Faster Scheduling</b><i>No calendars, no slots. One link, good for fourteen hours.</i></span></a>
+            <a href="better-shortlisting/"><span class="dd-n">02</span><span class="dd-x"><b>Better Shortlisting</b><i>Rank on twenty signals, with the evidence behind each one.</i></span></a>
+            <a href="fairer-interviews/"><span class="dd-n">04</span><span class="dd-x"><b>Fairer Interviews</b><i>Every candidate gets the same questions, scored the same way.</i></span></a>
+          </div>
+        </div>
+      </div>
+      <a href="pricing/">Pricing</a>
+      <a href="for-candidates/">For candidates</a>
       <a href="#waitlist" class="btn">Join waitlist <span class="arr">→</span></a>
     </div>
   </div>
@@ -620,7 +918,8 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   <div class="strewn" id="strewn"></div>
   <div class="wrap">
     <h1 class="rv"><span class="infu"><svg class="inf" viewBox="0 0 132 80" role="img" aria-label="Infinite"><path class="ip" d="M20 40 C 20 17, 52 17, 66 40 C 80 63, 112 63, 112 40 C 112 17, 80 17, 66 40 C 52 63, 20 63, 20 40"/></svg><span class="infw">resumes.</span></span><br/><span class="infw2">One perfect hire.</span></h1>
-    <p class="sub rv">AgentR reads every application, checks what candidates actually claim, and interviews the ones who clear your bar. You spend your week on the four who matter.</p>
+    <p class="sub rv">You spend the week on four people, not two hundred.
+      <span class="k">Nobody is rejected by a machine.</span></p>
     <form class="waitlist rv" id="form1">
       <input type="email" placeholder="Work email" required aria-label="Work email" />
       <button class="btn" type="submit">Get early access <span class="arr">→</span></button>
@@ -770,6 +1069,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 <!-- ================= PROCTORING / GUARD ================= -->
 <section class="flat" id="guard">
   <div class="wrap">
+    <div class="gd-band"><span>proctored</span></div>
     <div class="center">
       <h2>Cheating got easier. <span class="serif">So did catching it.</span></h2>
       <p class="lead">Two layers watch an interview. One sees the room, the other sees the
@@ -841,6 +1141,7 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
 
     <p class="gd-note hand">it can close a room. it can never close the door on a candidate.</p>
+    <div class="gd-band end"><span>proctored</span></div>
   </div>
 </section>
 
@@ -879,21 +1180,17 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 <!-- ================= STATS ================= -->
 <section class="flat" id="stats">
   <div class="wrap center">
-    <h2 class="rv">Four numbers <span class="serif">we'll stand behind.</span></h2>
-    <p class="lead rv">Not benchmarks. Just how the system behaves, every time, for every role.</p>
+    <h2 class="rv">How it works, <span class="serif">in four numbers.</span></h2>
+    <p class="lead rv">No made-up statistics. Just what it does every time, and the one number you pick yourself.</p>
     <div class="stats-grid">
-      <div class="stat rv"><div class="num" data-to="100" data-suffix="%">0</div><div class="lbl">Applications read in full, against your criteria. No skimming, no sampling.</div></div>
+      <div class="stat rv"><div class="num" data-to="100" data-suffix="%">0</div><div class="lbl">Every application is read in full. Nobody gets skipped.</div></div>
       <div class="stat rv">
-        <span class="num-wrap"><span class="num" data-to="0" data-suffix="">0</span>
-          <!-- the pen circles the number that matters most -->
-          <svg class="zero-circ" viewBox="0 0 120 104" aria-hidden="true"><path d="M16 52 C 12 18, 86 2, 106 32 C 122 60, 86 100, 42 97 C 12 94, 8 74, 16 52" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>
-        </span>
-        <div class="lbl">Auto-rejections. Every no in that pile is one you chose.</div>
+        <div class="num" data-to="0" data-suffix="">0</div>
+        <div class="lbl">Applications the software rejects on its own. Every no comes from a person on your team.</div>
       </div>
-      <div class="stat rv"><div class="num" data-to="6" data-suffix="">0</div><div class="lbl">Verdicts a claim can earn, from supported to mismatch.</div></div>
-      <div class="stat rv"><div class="num" data-to="24" data-suffix="/7">0</div><div class="lbl">Candidates interview when it suits them, not your calendar.</div></div>
+      <div class="stat rv"><div class="num" data-to="20" data-suffix="">0</div><div class="lbl">Things we look at in each resume, like how a career has grown, or what a gap was for.</div></div>
+      <div class="stat rv"><div class="num" data-to="80" data-suffix="%">0</div><div class="lbl">How closely someone has to match what you asked for before we invite them to interview. You pick this number.</div></div>
     </div>
-    <div class="stat-note hand rv">the only numbers on this page. on purpose.</div>
   </div>
 </section>
 
@@ -902,9 +1199,11 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
   <div class="wrap">
     <div class="note rv">
       <p class="note-kicker hand">why we built this</p>
-      <p class="note-body">We once spent three weekends reading two hundred resumes for one backend role. Half of them claimed "led the migration". Two of them actually had. The tools we tried ranked people by keyword bingo.</p>
-      <p class="note-body">So we built the thing we wished existed. It reads properly, checks what people claim, and shows its work. You still make every decision. You just stop doing the paperwork.</p>
-      <p class="note-sign hand">the AgentR team</p>
+      <p class="note-lead">Three weekends. Two hundred resumes. One role. Half of them claimed the
+        same achievement. Two of them could prove it.</p>
+      <p class="note-body">So we built this. It reads every one, checks what people claim, and
+        shows you why. You still decide.</p>
+      <p class="note-sign hand">the AgentR team<svg class="sign-line" viewBox="0 0 200 12" aria-hidden="true"><path d="M5 8.5 C 42 2.5, 96 11, 132 5 C 160 .5, 182 6.5, 195 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></p>
     </div>
   </div>
 </section>
@@ -926,10 +1225,46 @@ if('scrollRestoration' in history) history.scrollRestoration = 'manual';
 </section>
 
 <footer>
-  <div class="foot">
-    <a class="logo" href="#top" aria-label="AgentR"><img class="mark" src="agentr-logo.png" alt="AgentR" /></a>
-    <div class="foot-links"><a href="#process">How it works</a><a href="#stats">The numbers</a><a href="#waitlist">Waitlist</a></div>
-    <div>© 2026 AgentR · made by people who read resumes so you don't have to</div>
+  <div class="foot-in">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="agentr-logo.png" alt="AgentR" />
+        <p>Reads every application, checks what candidates claim, and hands you a shortlist with the
+          reasoning attached.</p>
+      </div>
+      <div class="foot-col">
+        <b>process</b>
+        <a href="smarter-screening/">Smarter Screening</a>
+        <a href="better-shortlisting/">Better Shortlisting</a>
+        <a href="faster-scheduling/">Faster Scheduling</a>
+        <a href="fairer-interviews/">Fairer Interviews</a>
+      </div>
+      <div class="foot-col">
+        <b>company</b>
+        <a href="about/">About</a>
+        <a href="pricing/">Pricing</a>
+        <a href="contact/">Contact</a>
+      </div>
+      <div class="foot-col">
+        <b>trust</b>
+        <a href="for-candidates/">For candidates</a>
+        <a href="security/">Security</a>
+        <a href="privacy/">Privacy</a>
+        <a href="terms/">Terms</a>
+      </div>
+    </div>
+    <div class="foot-badges">
+      <a href="https://www.producthunt.com/products/agentr/reviews?utm_source=badge-product_review&amp;utm_medium=badge&amp;utm_source=badge-agentr" target="_blank" rel="noopener"><img
+        src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=1055792&amp;theme=light" alt="Leave a review for AgentR on Product Hunt" width="250" height="54" loading="lazy" /></a>
+      <a href="https://somi.ai/products/agent-r?utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=featured_badge&amp;utm_content=AgentR" target="_blank" rel="noopener"><img
+        src="https://somi.ai/api/widget/agent-r?theme=neutral&amp;size=large" alt="AgentR, featured on SOMI AI as Tool of the Day" height="54" loading="lazy" /></a>
+      <a class="foot-li" href="https://www.linkedin.com/company/agentr/posts/?feedView=all" target="_blank" rel="noopener" aria-label="AgentR on LinkedIn"><svg
+        width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg></a>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 AgentR · made by people who read resumes so you don't have to</span>
+      <span>Private beta.</span>
+    </div>
   </div>
 </footer>
 
@@ -951,7 +1286,7 @@ addEventListener('pageshow', ()=>scrollTo(0,0));
 
 /* smooth scroll */
 if(!reduced){
-  const lenis = new Lenis({lerp:.09});
+  const lenis = window._lenis = new Lenis({lerp:.09});
   lenis.scrollTo(0,{immediate:true});
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add(t=>lenis.raf(t*1000));
@@ -1041,36 +1376,48 @@ if(!reduced){
   const ipLen = ip.getTotalLength();
   ip.style.strokeDasharray = ipLen;
   ip.style.strokeDashoffset = ipLen;
-  gsap.to(ip,{strokeDashoffset:0,duration:1.15,ease:'power1.inOut',delay:.4});
-  gsap.fromTo('.infw',
-    {clipPath:'inset(-20% 100% -20% 0)'},
-    {clipPath:'inset(-20% -6% -20% 0)',duration:1.05,ease:'power1.inOut',delay:1.45});
-  /* the punchline springs up from below with a big elastic bounce */
-  gsap.fromTo('.infw2',{opacity:0},{opacity:1,duration:.15,delay:2.4});
-  gsap.fromTo('.infw2',{y:110,scale:.8},{y:0,scale:1,duration:2.2,ease:'elastic.out(1.1,.42)',delay:2.4,transformOrigin:'50% 100%'});
 }
 
-/* reveals: headline first, the rest of the hero (and nav) waits for the writing to finish */
-gsap.to('header h1.rv',{opacity:1,y:0,duration:.8,ease:'power3.out',delay:.05});
-gsap.to('header .rv:not(h1)',{opacity:1,y:0,duration:1,ease:'power3.out',stagger:.09,delay:reduced?0:3.4});
-if(!reduced){
-  gsap.fromTo('nav',{opacity:0,y:-18},{opacity:1,y:0,duration:.9,ease:'power3.out',delay:3.4});
-  /* the scroll invitation keeps hopping forever (starts after its reveal finishes) */
-  gsap.timeline({repeat:-1,delay:4.8,repeatDelay:.7})
-    .to('.hand-note',{y:-12,duration:.35,ease:'power2.out'})
-    .to('.hand-note',{y:0,duration:.65,ease:'bounce.out'});
+/* The hero writes itself in when the gate lets go, not on page load. Everything it
+   touches starts hidden (.rv is opacity:0, the infinity path is dashed out), so it
+   simply waits. playHero is a declaration on purpose: the gate block below is
+   further down the file and relies on hoisting. */
+/* Hide the nav up front. Everything else playHero touches is already hidden by .rv
+   or by its dash offset, but the nav is visible by default and its from-state only
+   lands when playHero runs, which is 0.4s into the gate fade. That is long enough to
+   flash a solid navbar and then snap it away. */
+if(!reduced) gsap.set('nav',{opacity:0,y:-18});
+
+let heroPlayed = false;
+function playHero(){
+  if(heroPlayed) return; heroPlayed = true;
+  if(!reduced){
+    gsap.to(ip,{strokeDashoffset:0,duration:1.15,ease:'power1.inOut',delay:.4});
+    gsap.fromTo('.infw',
+      {clipPath:'inset(-20% 100% -20% 0)'},
+      {clipPath:'inset(-20% -6% -20% 0)',duration:1.05,ease:'power1.inOut',delay:1.45});
+    /* the punchline springs up from below with a big elastic bounce */
+    gsap.fromTo('.infw2',{opacity:0},{opacity:1,duration:.15,delay:2.4});
+    gsap.fromTo('.infw2',{y:110,scale:.8},{y:0,scale:1,duration:2.2,ease:'elastic.out(1.1,.42)',delay:2.4,transformOrigin:'50% 100%'});
+  }
+  gsap.to('header h1.rv',{opacity:1,y:0,duration:.8,ease:'power3.out',delay:.05});
+  gsap.to('header .rv:not(h1)',{opacity:1,y:0,duration:1,ease:'power3.out',stagger:.09,delay:reduced?0:3.4});
+  if(!reduced){
+    gsap.fromTo('nav',{opacity:0,y:-18},{opacity:1,y:0,duration:.9,ease:'power3.out',delay:3.4});
+    /* the scroll invitation keeps hopping forever (starts after its reveal finishes) */
+    gsap.timeline({repeat:-1,delay:4.8,repeatDelay:.7})
+      .to('.hand-note',{y:-12,duration:.35,ease:'power2.out'})
+      .to('.hand-note',{y:0,duration:.65,ease:'bounce.out'});
+  }
 }
+/* no gate on the page for any reason: play it straight away rather than never */
+if(!document.getElementById('gate')) playHero();
 document.querySelectorAll('.rv').forEach(el=>{
   if(el.closest('header')) return;
   gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'}});
 });
 
-/* the fixed nav flips to its ink variant for exactly the stretch it spends over the
-   dark section — measured at the nav's own bottom edge, the same offset the pin uses */
-ScrollTrigger.create({trigger:'#guard',start:'top '+NAV,end:'bottom '+NAV,
-  toggleClass:{targets:'nav',className:'dark'}});
-
-/* ============ the dark section arrives as a shot, not a fade ============
+/* ============ the guard section arrives as a shot, not a fade ============
    .from() rather than .rv, so nothing is stuck at opacity:0 if this never runs. */
 if(!reduced){
   gsap.timeline({scrollTrigger:{trigger:'#guard',start:'top 64%'}})
@@ -1088,7 +1435,7 @@ if(!reduced){
   loop
     /* reset to the quiet room */
     .set('.gm-cheat',{y:26,x:0,opacity:0,scale:1,
-      backgroundColor:'rgba(30,21,72,.55)',borderColor:'rgba(188,172,245,.65)'})
+      backgroundColor:'#ffffff',borderColor:'rgba(84,56,204,.55)'})
     .set('.gm-cheat > i',{scaleX:0,opacity:1})
     .set('.gm-line',{scaleX:0,transformOrigin:'left center'})
     .set('.gm-target',{opacity:0,scale:1.35})
@@ -1101,8 +1448,8 @@ if(!reduced){
     .set('.gm-v-sus',{opacity:0,scale:.8})
     .set('.gm-v-clean',{opacity:1})
     .set('.gm-call',{x:0})
-    .set('.gm-guard',{borderColor:'rgba(188,172,245,.4)',
-      boxShadow:'0 26px 60px rgba(58,37,150,.45)'})
+    .set('.gm-guard',{borderColor:'rgba(84,56,204,.5)',
+      boxShadow:'0 2px 6px rgba(30,21,72,.2),0 34px 74px rgba(30,21,72,.42)'})
     .set('.gm-hb i',{animationDuration:'2.4s',backgroundColor:'#BCACF5'})
     .set('.gm-wave i',{animationPlayState:'running',opacity:1})
     .set('.gm-rec b',{opacity:1})
@@ -1139,16 +1486,16 @@ if(!reduced){
     .fromTo('.gm-scan',{y:-90,opacity:0},{opacity:1,duration:.08,ease:'none'},'sweep')
     .to('.gm-scan',{y:()=>document.querySelector('.gm-stage').offsetHeight,duration:.62,ease:'none'},'sweep')
     .to('.gm-scan',{opacity:0,duration:.1},'sweep+=.54')
-    .to('.gm-cheat',{backgroundColor:'rgba(188,172,245,.3)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
-    .to('.gm-cheat',{borderColor:'rgba(255,255,255,.95)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
+    .to('.gm-cheat',{backgroundColor:'rgba(188,172,245,.55)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
+    .to('.gm-cheat',{borderColor:'rgba(58,37,150,.95)',duration:.1,yoyo:true,repeat:1},'sweep+=.38')
 
     /* caught: brackets snap on, the helper flinches, and the whole instrument
        turns brass — the state is readable from across the room */
     .add('lock','sweep+=.62')
     .to('.gm-target',{opacity:1,scale:1,duration:.26,ease:'back.out(3)'},'lock')
     .to('.gm-cheat',{x:-2,duration:.05,repeat:3,yoyo:true,ease:'none'},'lock')
-    .to('.gm-guard',{borderColor:'rgba(168,130,59,.7)',
-      boxShadow:'0 26px 60px rgba(58,37,150,.45), 0 0 26px rgba(168,130,59,.22)',duration:.3},'lock')
+    .to('.gm-guard',{borderColor:'rgba(168,130,59,.9)',
+      boxShadow:'0 2px 6px rgba(30,21,72,.2),0 34px 74px rgba(30,21,72,.42),0 0 30px rgba(168,130,59,.4)',duration:.3},'lock')
     .set('.gm-hb i',{backgroundColor:'#A8823B'},'lock')
     .to('.gm-v-clean',{opacity:0,duration:.12},'lock+=.1')
     .to('.gm-v-sus',{opacity:1,scale:1,duration:.28,ease:'back.out(2.2)'},'<')
@@ -1178,8 +1525,8 @@ if(!reduced){
     .to('.gm-v-sus',{opacity:0,duration:.14},'clear')
     .to('.gm-v-clean',{opacity:1,duration:.28},'clear+=.1')
     .to('.gm-empty',{opacity:1,duration:.28},'clear+=.1')
-    .to('.gm-guard',{borderColor:'rgba(188,172,245,.4)',
-      boxShadow:'0 26px 60px rgba(58,37,150,.45)',duration:.4},'clear')
+    .to('.gm-guard',{borderColor:'rgba(84,56,204,.5)',
+      boxShadow:'0 2px 6px rgba(30,21,72,.2),0 34px 74px rgba(30,21,72,.42)',duration:.4},'clear')
     .set('.gm-hb i',{backgroundColor:'#BCACF5',animationDuration:'2.4s'},'clear')
     .to('.gm-dim',{scaleY:0,duration:.5,ease:'power2.inOut'},'clear')
     .to('.gm-lock',{opacity:0,scale:.92,duration:.26},'clear')
@@ -1197,19 +1544,6 @@ document.querySelectorAll('.num').forEach(n=>{
     onUpdate:()=>n.textContent=Math.round(o.v)+suf,
     scrollTrigger:{trigger:n,start:'top 85%'}});
 });
-/* the pen circles the zero once it's on screen. Skipped under reduced motion, where
-   the CSS default (no dash) leaves the circle already drawn. */
-if(!reduced){
-  const zc = document.querySelector('.zero-circ path');
-  if(zc){
-    const L = zc.getTotalLength();
-    zc.style.strokeDasharray = L;
-    zc.style.strokeDashoffset = L;
-    gsap.to(zc,{strokeDashoffset:0,duration:.85,ease:'power2.inOut',delay:.55,
-      scrollTrigger:{trigger:'.num-wrap',start:'top 82%'}});
-  }
-}
-
 /* ============ the process timeline ============
    One scrubbed timeline over the tall #process section. Sticky CSS does the
    pinning; GSAP only animates. Single writer per property — no glitches. */
@@ -1224,6 +1558,11 @@ function placeCircs(){
     const circ = document.getElementById(c), claim = document.getElementById(cl);
     circ.style.top = (claim.offsetTop - 7)+'px';
     circ.style.height = (claim.offsetHeight + 14)+'px';
+    /* hug the claim, not the card: left/right off the card sent the pen stroke
+       out past the highlighted line and into the card's own edge */
+    circ.style.left  = (claim.offsetLeft - 7)+'px';
+    circ.style.width = (claim.offsetWidth + 14)+'px';
+    circ.style.right = 'auto';
   });
 }
 placeCircs();
@@ -1317,8 +1656,200 @@ tl
     {opacity:1, duration:.06, stagger:.02, ease:'power2.out',
      x:(i)=>[-60,-42,2][i], y:(i)=>[16,-10,8][i], rotation:(i)=>[-5,-2.5,3.5][i]},
     'rank+=.03')
-  .to('#board',{opacity:1,x:0,duration:.05},'rank+=.04')
-  .to('#board .bk-h, #board .brow',{opacity:1,x:0,duration:.05,stagger:.02},'rank+=.06');
+  .fromTo('#board',{opacity:0,x:40},{opacity:1,x:0,duration:.05,immediateRender:false},'rank+=.04')
+  .fromTo('#board .bk-h, #board .brow',{opacity:0,x:26},
+    {opacity:1,x:0,duration:.05,stagger:.02,immediateRender:false},'rank+=.06');
+
+/* ============ the opening gate ============
+   Scroll stays locked behind it until a row is picked. v9 flew a sheet from the
+   chosen pile onto the stage, but that only worked because v9 had no hero: the
+   stage was on screen at scroll 0. Here #process sits below the fold, so the
+   gate lifts and hands you the hero instead of flying to something off screen. */
+{
+  const gate = document.getElementById('gate');
+  if(gate){
+    const lock = ()=>{
+      document.documentElement.style.overflow='hidden';
+      document.body.style.overflow='hidden';
+      if(window._lenis) window._lenis.stop();
+    };
+    const unlock = ()=>{
+      document.documentElement.style.overflow='';
+      document.body.style.overflow='';
+      if(window._lenis){ window._lenis.start(); window._lenis.scrollTo(0,{immediate:true}); }
+      scrollTo(0,0);
+      ScrollTrigger.refresh();
+    };
+    lock();
+
+    /* the row you pick reframes the hero. Same product, same promises, told from
+       the angle of the problem you just said you had. The closing sentence never
+       changes: it is the one guarantee that holds whichever door you came in. */
+    const HERO = {
+      volume:{
+        line1:'resumes.', line2:'One perfect hire.',
+        sub:'You spend the week on four people, not two hundred. '
+           +'<span class="k">Nobody is rejected by a machine.</span>',
+        note:'watch this pile become a shortlist'
+      },
+      fit:{
+        line1:'lookalikes.', line2:'One clear choice.',
+        sub:'What someone did counts for more than what they listed. '
+           +'<span class="k">Every place on the list shows its evidence.</span>',
+        note:'watch the lookalikes come apart'
+      },
+      trust:{
+        line1:'claims.', line2:'Only the ones that hold up.',
+        sub:'Every big claim is checked against the public record. '
+           +'<span class="k">You see the verdict, and where it came from.</span>',
+        note:'watch the claims get checked'
+      }
+    };
+    function applyVariant(key){
+      const v = HERO[key] || HERO.volume;
+      document.querySelector('.infw').textContent  = v.line1;
+      document.querySelector('.infw2').textContent = v.line2;
+      document.querySelector('.sub').innerHTML = v.sub;
+      /* only the text node: the bouncing arrow is an svg sibling and must survive */
+      const note = document.querySelector('.hand-note');
+      if(note && note.firstChild) note.firstChild.nodeValue = v.note + '\n      ';
+    }
+
+    /* the sheet you picked doesn't vanish with the gate: it flies out of that row's
+       paper art and lands as one of the resumes strewn across the hero. One object
+       the whole way, so the eye carries from the gate into the page. */
+    const LANDS_ON = 5;                      /* spots[5] = upper right, [74,34,-8] */
+    function flySheet(btn, done){
+      const sheet  = btn && btn.querySelector('.viz i:last-of-type');
+      const target = strewn.children[LANDS_ON];
+      if(!sheet || !target){ done(); return; }
+
+      /* the hero docs bob on an endless yoyo. Park that tween and zero its y, or the
+         landing spot drifts up to 14px while the flight is in the air. */
+      const bob = gsap.getTweensOf(target).filter(t=>t.repeat && t.repeat()===-1);
+      bob.forEach(t=>t.pause());
+      gsap.set(target,{y:0});
+
+      const from = sheet.getBoundingClientRect();
+      const rot  = spots[LANDS_ON][2];
+      /* measure the doc square-on. getBoundingClientRect on a rotated element gives
+         the axis-aligned bounding box, which is bigger than the doc and sits up-left
+         of it, so landing on that box would drop the sheet off its mark. */
+      gsap.set(target,{rotation:0});
+      const to = target.getBoundingClientRect();
+      gsap.set(target,{rotation:rot});
+
+      /* the flyer IS a hero doc, so nothing has to crossfade at the far end */
+      const flyer = target.cloneNode(true);
+      flyer.style.cssText = 'position:fixed;left:'+to.left+'px;top:'+to.top+'px;'
+        + 'width:'+to.width+'px;height:'+to.height+'px;margin:0;z-index:320;'
+        + 'pointer-events:none;opacity:.85';
+      document.body.appendChild(flyer);
+
+      gsap.set(flyer,{transformOrigin:'50% 50%',
+        x:(from.left + from.width/2) - (to.left + to.width/2),
+        y:(from.top  + from.height/2) - (to.top  + to.height/2),
+        scale:from.width / to.width, rotation:-14});
+      gsap.set(sheet,{opacity:0});            /* the row hands its sheet over */
+      gsap.set(target,{opacity:0});           /* the real one waits at the far end */
+
+      gsap.timeline({onComplete:()=>{
+          gsap.set(target,{opacity:.85});
+          /* rewind before resuming: the tween was paused mid-cycle and its y zeroed,
+             so a plain play() snaps y back to wherever the playhead sat. progress(0)
+             is y:0, which is exactly where the sheet just landed. */
+          bob.forEach(t=>{ t.progress(0); t.play(); });
+          flyer.remove();
+          done();
+        }})
+        .to(flyer,{x:0,y:0,scale:1,rotation:rot,duration:.85,ease:'power3.inOut'},0)
+        .to(gate,{opacity:0,duration:.5,ease:'power2.inOut'},.16)
+        /* start the writing while the sheet is still travelling: the page is already
+           showing through the fading gate, so a cold pause here reads as a stall */
+        .add(playHero,.42);
+    }
+
+    let opened=false;
+    function openPage(btn){
+      if(opened) return; opened=true;
+      applyVariant(btn && btn.dataset.v);
+      if(btn) btn.classList.add('opening');
+      const done = ()=>{
+        gate.style.display='none';
+        unlock();
+      };
+      if(reduced || !btn){
+        if(!reduced){ gsap.timeline({onComplete:done})
+          .to(gate,{opacity:0,duration:.5,ease:'power2.inOut'},.12)
+          .add(playHero,.3); }
+        else { playHero(); done(); }
+        return;
+      }
+      flySheet(btn, done);
+    }
+    /* the paper leans toward the pointer. GSAP owns .vizwrap's transform outright,
+       which is why the CSS hover rule for it was removed: two writers on one
+       transform and the last one to run wins at random. */
+    if(!reduced) document.querySelectorAll('#gate .grow').forEach(row=>{
+      const wrap = row.querySelector('.vizwrap');
+      if(!wrap) return;
+      const xTo = gsap.quickTo(wrap,'x',{duration:.5,ease:'power3'});
+      const yTo = gsap.quickTo(wrap,'y',{duration:.5,ease:'power3'});
+      const rTo = gsap.quickTo(wrap,'rotation',{duration:.5,ease:'power3'});
+      row.addEventListener('pointerenter', ()=>{
+        gsap.to(wrap,{scale:1.07,duration:.45,ease:'power3.out',overwrite:'auto'});
+      });
+      row.addEventListener('pointermove', e=>{
+        const r = row.getBoundingClientRect();
+        const px = (e.clientX - r.left)/r.width  - .5;
+        const py = (e.clientY - r.top )/r.height - .5;
+        xTo(px*26); yTo(py*18); rTo(-2.5 + px*7);
+      });
+      row.addEventListener('pointerleave', ()=>{
+        xTo(0); yTo(0); rTo(0);
+        gsap.to(wrap,{scale:1,duration:.6,ease:'power3.out',overwrite:'auto'});
+      });
+    });
+
+    document.querySelectorAll('#gate .grow').forEach(b=>
+      b.addEventListener('click',()=>openPage(b)));
+
+    /* ?p=volume|fit|trust lands straight on the framed hero, gate skipped */
+    const preset = new URLSearchParams(location.search).get('p');
+    if(preset && HERO[preset]){
+      const row = document.querySelector('#gate .grow[data-v="'+preset+'"]');
+      openPage(row);
+    }
+
+    /* the gate assembles: the question is written, then the choices arrive in order */
+    if(!reduced){
+      gsap.timeline({defaults:{ease:'power3.out'}})
+        .from('.g-logo',{opacity:0,y:-12,duration:.6},0)
+        .from('.g-title',{opacity:0,y:16,duration:.8},.2)
+        .from('.g-what',{opacity:0,y:12,duration:.7},.42)
+        .fromTo('.g-lead',{clipPath:'inset(-25% 100% -25% 0)'},
+                          {clipPath:'inset(-25% -4% -25% 0)',duration:.9,ease:'power1.inOut'},.72)
+        .from('#gate .grow',{opacity:0,x:34,duration:.75,stagger:.11},.5)
+        /* clearProps hands the transform back to CSS so the hover scale still works */
+        .from('.vizwrap',{opacity:0,scale:.55,duration:.6,ease:'back.out(1.6)',
+          stagger:.11,clearProps:'all'},.75);
+    }
+  }
+}
+
+
+/* ============ nav mega-menu ============ */
+document.querySelectorAll('.navdrop').forEach(dd=>{
+  const btn = dd.querySelector('.navdrop-t');
+  const set = on=>{ dd.classList.toggle('on',on); btn.setAttribute('aria-expanded',on); };
+  dd.addEventListener('pointerenter',()=>{ if(matchMedia('(hover:hover)').matches) set(true); });
+  dd.addEventListener('pointerleave',()=>{ if(matchMedia('(hover:hover)').matches) set(false); });
+  btn.addEventListener('click',()=>set(!dd.classList.contains('on')));
+  /* focus-within keeps it open for keyboard users; blur out of the group closes it */
+  dd.addEventListener('focusout',e=>{ if(!dd.contains(e.relatedTarget)) set(false); });
+  dd.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>set(false)));
+  addEventListener('keydown',e=>{ if(e.key==='Escape') set(false); });
+});
 
 /* waitlist submit (front-end only) */
 document.querySelectorAll('form.waitlist').forEach(f=>f.addEventListener('submit',e=>{
