@@ -3,26 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Contact AgentR</title>
-<meta name="description" content="Talk to the people building AgentR. Sales, support, privacy requests and security disclosures." />
+<title>AgentR for investors, rebuilding hiring from first principles</title>
+<meta name="description" content="We are not software with some AI features. We are rebuilding hiring from first principles, and this is the case for it." />
 <link rel="icon" href="../favicon.ico" sizes="any" />
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png" />
 <link rel="manifest" href="../assets/site.webmanifest" />
 <meta name="theme-color" content="#F5F2EC" />
-<link rel="canonical" href="https://agentr.global/contact/" />
-<meta property="og:url" content="https://agentr.global/contact/" />
+<link rel="canonical" href="https://agentr.global/investors/" />
+<meta property="og:url" content="https://agentr.global/investors/" />
 <meta property="og:site_name" content="AgentR" />
 <meta property="og:locale" content="en" />
 <meta property="og:image" content="https://agentr.global/assets/android-chrome-512x512.png" />
 <meta property="og:image:alt" content="AgentR" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Contact AgentR" />
-<meta property="og:description" content="Talk to the people building AgentR. Sales, support, privacy requests and security disclosures." />
+<meta property="og:title" content="AgentR for investors, rebuilding hiring from first principles" />
+<meta property="og:description" content="We are not software with some AI features. We are rebuilding hiring from first principles, and this is the case for it." />
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Contact AgentR" />
-<meta name="twitter:description" content="Talk to the people building AgentR. Sales, support, privacy requests and security disclosures." />
+<meta name="twitter:title" content="AgentR for investors, rebuilding hiring from first principles" />
+<meta name="twitter:description" content="We are not software with some AI features. We are rebuilding hiring from first principles, and this is the case for it." />
 <script>
 /* must run before the browser decides to restore scroll on reload. The flag alone
    is not enough in every browser, so assert the position on load too, but only
@@ -57,34 +57,106 @@ addEventListener('pageshow', _top);
       </div>
       <a href="../pricing/">Pricing</a>
       <a href="../for-candidates/">For candidates</a>
-      <a href="../investors/">For investors</a>
+      <a href="../investors/" aria-current="page">For investors</a>
       <a href="../#waitlist" class="btn">Join waitlist <span>&#8594;</span></a>
     </div>
   </div>
 </nav>
 <main>
 <header class="phead wrap">
-  <span class="kicker">say hello</span>
-  <h1>Talk to <span class="serif">a person.</span></h1>
-  <p class="lede">We are small enough that whoever answers can usually change the product. One
-    address, and it reaches all of us.</p>
+  <span class="kicker">for investors</span>
+  <h1>Not software with <span class="serif">some AI features.</span></h1>
+  <p class="lede">We are rebuilding hiring from first principles. The resume stopped being a
+    signal, and every tool in the category is still ranking them faster.</p>
+  <ul class="claims">
+    <li>The bottleneck moved from reading applications to trusting them.</li>
+    <li>We built the verification layer, not another ranking layer.</li>
+    <li>Three markets want the same product for three different reasons.</li>
+  </ul>
 </header>
 
 <section class="wrap band" style="padding-top:0">
-  <div class="prose">
-    <p>Write to us about anything: getting access, pricing for a larger team, a privacy or data
-      request, or a security disclosure. It is one inbox and we read all of it.</p>
-    <p style="font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;margin-top:26px">
-      <a href="mailto:legal.vibencode@gmail.com">legal.vibencode@gmail.com</a></p>
-    <p style="font-size:14.5px;margin-top:26px">Vibencode Private Limited<br/>
-      Plot No. 5, Rose Enclave, Shastri Ward<br/>Sagar, Madhya Pradesh 470002, India</p>
+  <h2 class="sec">Why <span class="serif">now.</span></h2>
+  <ul class="ruled lbl">
+    <li><b>the signal</b><div><span class="t">Anyone can write a senior-sounding career in nine seconds</span>
+      <p>A language model can make any resume read like the right one. It cannot invent an outcome
+        that never happened. Every screening tool built before 2023 assumes the document is evidence.
+        It is now a draft.</p></div></li>
+    <li><b>the tooling</b><div><span class="t">Applicant tracking rewards the people who studied the filter</span>
+      <p>Keyword matching hands the shortlist to whoever read a blog post about resume optimisation,
+        not to whoever did the work. Faster ranking of the same bad signal does not fix this.</p></div></li>
+    <li><b>the answer</b><div><span class="t">Read everything, then check what it claims</span>
+      <p>Reading is cheap now. Verification is the scarce thing, and it is the part nobody shipped.
+        That is the layer we built, and it is the reason the product is defensible.</p></div></li>
+  </ul>
+</section>
 
-    <h2>Applied to a role and have questions?</h2>
-    <p>Start with the <a href="../for-candidates/">candidate page</a>. It explains what happens to
-      your application, what is recorded during an interview, and how to make a data request. If it
-      does not answer your question, write to the address above and tell us the role you applied
-      to.</p>
+<section class="wrap band">
+  <h2 class="sec">What is <span class="serif">already running.</span></h2>
+  <p class="lead">Not a roadmap. This is the system, in production, today.</p>
+  <div class="grid-2">
+    <div class="card"><h3>Every application read</h3>
+      <p>Parsed into structured fields, contact details stripped before scoring, hidden prompt
+        injection removed and retained. Nothing is filtered out before a human sees it.</p></div>
+    <div class="card"><h3>Claims checked against the public record</h3>
+      <p>Roles and achievements are searched against public sources and returned with one of six
+        verdicts and the reasoning behind each. This is the piece competitors do not have.</p></div>
+    <div class="card"><h3>Structured interviews at the bar you set</h3>
+      <p>One question set per role, the same rubric for everyone, taken on the candidate&rsquo;s own
+        time. No calendars, no interviewer in the room.</p></div>
+    <div class="card"><h3>Integrity, honestly scoped</h3>
+      <p>Browser signals are advisory. A native macOS Guard can hold the room shut. Neither ever
+        moves a score, and nothing auto-rejects. We would rather say that than imply certainty.</p></div>
   </div>
+</section>
+
+<section class="wrap band">
+  <h2 class="sec">Three markets, <span class="serif">one product.</span></h2>
+  <p class="lead">The same system sells three different ways, which is what makes the wedge
+    workable rather than scattered.</p>
+  <div class="grid-3">
+    <div class="card"><h3>India: volume</h3>
+      <p>Two hundred applicants for one seat is normal. The pitch is that nobody gets skimmed and
+        nobody gets auto-rejected, at any volume.</p></div>
+    <div class="card"><h3>The West: fit</h3>
+      <p>Smaller piles, higher cost per bad hire. The pitch is evidence: every rank opens into the
+        line of the resume that earned it.</p></div>
+    <div class="card"><h3>The Middle East: verification</h3>
+      <p>Credential checking is a standing requirement, not a nice-to-have. The claim check is the
+        product, and it already exists.</p></div>
+  </div>
+</section>
+
+<section class="wrap band">
+  <h2 class="sec">Our <span class="serif">views.</span></h2>
+  <p class="lead">The arguments behind the product, at length.</p>
+  <a class="viewcard" href="../views/when-everyone-is-using-bots/">
+    <img src="../assets/banner-img.png" alt="" width="2000" height="1125" loading="lazy" />
+    <div class="vc-body">
+      <span class="vc-meta">18 March 2025 &middot; 3 min read</span>
+      <h3>When everyone is using bots, how do you find the humans who matter?</h3>
+      <p>Keyword matching rewards whoever optimised their resume with the same model the recruiter
+        used. The case for reading a career as a story, and being able to show the reasoning.</p>
+      <span class="vc-go">Read it &#8594;</span>
+    </div>
+  </a>
+</section>
+
+<section class="wrap band">
+  <div class="deck">
+    <div>
+      <span class="kicker">the deck</span>
+      <h2 class="sec">Read the <span class="serif">whole case.</span></h2>
+      <p class="lead">Market, wedge, product, and where the money goes. Fifteen slides.</p>
+    </div>
+    <div class="deck-act">
+      <a class="btn" href="../agentr-deck.pdf" download>Download the deck &#8594;</a>
+      <a class="btn ghost" href="mailto:legal.vibencode@gmail.com?subject=AgentR%20investors">Email us</a>
+      <p class="metrics-note">or write to legal.vibencode@gmail.com</p>
+    </div>
+  </div>
+  <div class="draftnote" style="margin-top:26px"><b>Needs the file.</b> The button points at
+    <code>/agentr-deck.pdf</code>, which is not in the repo yet. Drop it in and delete this note.</div>
 </section>
 </main>
 <footer>
